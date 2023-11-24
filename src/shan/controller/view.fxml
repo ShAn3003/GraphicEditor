@@ -10,6 +10,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
+<?import shan.interfaces.MyCanvas?>
+<?import shan.interfaces.MyVBox?>
+<?import shan.interfaces.MyTextArea?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="shan.controller.Controller">
     <top>
@@ -31,29 +34,59 @@
         </MenuBar>
     </top>
     <left>
-        <VBox prefHeight="200" prefWidth="100">
-            <ListView fx:id="figureList" prefWidth="80" prefHeight="200">
-                    <Button text="circle" prefWidth="80" prefHeight="20"/>
-                    <Button text="rectangle" prefWidth="80" prefHeight="20"/>
-                    <Button text="line" prefWidth="80" prefHeight="20"/>
-                    <Button text="ellipse" prefWidth="80" prefHeight="20"/>
-                    <Button text="text" prefWidth="80" prefHeight="20"/>
-                    <Button text="ADD_TEST" prefWidth="80" prefHeight="20" onAction="#pressADD_TEST"/>
+        <VBox prefHeight="200" prefWidth="200" minWidth="120" style="-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-spacing: 10;">
+
+            <ListView fx:id="figureList" prefWidth="120" prefHeight="Infinity" minHeight="200" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1px;">
+
+                <!-- 这里添加按钮和样式 -->
+                <Button text="Circle"
+                        style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                        prefWidth="120" prefHeight="40" onMouseClicked="#pressOnCir"/>
+
             </ListView>
+
         </VBox>
 
+<!--        <VBox prefHeight="200" prefWidth="100">-->
+<!--            <ListView fx:id="figureList" prefWidth="80" prefHeight="200">-->
+<!--                <Button text="Circle"-->
+<!--                        style="-fx-font-size: 18px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"-->
+<!--                        prefWidth="120" prefHeight="40" />-->
+
+<!--&lt;!&ndash;                <Button text="rectangle" prefWidth="80" prefHeight="20"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <Button text="line" prefWidth="80" prefHeight="20"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <Button text="ellipse" prefWidth="80" prefHeight="20"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <Button text="text" prefWidth="80" prefHeight="20"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <Button text="ADD_TEST" prefWidth="80" prefHeight="20" onAction="#pressADD_TEST"/>&ndash;&gt;-->
+<!--            </ListView>-->
+<!--        </VBox>-->
+
     </left>
-    <center>
-        <ScrollPane prefWidth="400" prefHeight="300">
-            <Canvas fx:id="canvas" onMouseClicked="#canvasMouseClicked" width="800" height="600"/>
+    <center >
+        <ScrollPane prefWidth="400" prefHeight="300" >
+            <MyCanvas fx:id="canvas"
+                      onMouseClicked="#canvasMouseClicked"
+                      onMouseDragEntered="#canvasMouseDragEnter"
+                      onMouseDragExited="#canvasMouseDragExit"
+                      onMouseDragged="#canvasMouseDragged"
+                      onMouseDragOver="#canvasMouseDragOver"
+                      onMouseDragReleased="#canvasMouseDragReleased"
+                      onMouseEntered="#canvasMouseEntered"
+                      onMouseExited="#canvasMouseExited"
+                      onMouseMoved="#canvasMouseMoved"
+                      onMousePressed="#canvasMousePressed"
+                      onMouseReleased="#cavasMouseReleased"
+                      width="800" height="600" />
         </ScrollPane>
     </center>
     <right>
-        <VBox prefHeight="200" prefWidth="50">
-            <ColorPicker fx:id="colorPicker"/>
-        </VBox>
+        <MyVBox fx:id="paraSetInter" prefHeight="200" prefWidth="50">
+
+        </MyVBox>
     </right>
     <bottom>
+        <MyTextArea fx:id="remarkArea" prefHeight="200" prefWidth="Infinity">
 
+        </MyTextArea>
     </bottom>
 </BorderPane>
