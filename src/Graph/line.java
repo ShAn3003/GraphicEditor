@@ -4,15 +4,15 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class line extends BaseGraph {
-    private Tuple coord2;
-    public line(Tuple a, Tuple b) {
-        this.SetCoord(a);
-        this.coord2=b;
-        SetBound();
+    private Tuple<Float,Float> coord2;
+    public line(float x0,float y0,float x1,float y1) {
+        setCoord0(x0,y0);
+        coord2=new Tuple<Float,Float>(x1,y1);
+        SetBound(x0,y0,x1,y1);
     }
-    public void SetBound()
+    public void SetBound(float x0,float y0,float x1,float y1)
     {
-        this.left =new Tuple(min(getcoord().first(),coord2.first()),max(getcoord().second(),coord2.second()));
-        this.right =new Tuple(max(getcoord().first(),coord2.first()),min(getcoord().second(),coord2.second()));
+        left=new Tuple<Float,Float>(min(2*x0-x1,x1),min(2*y0-y1,y1));
+        right=new Tuple<Float,Float>(max(2*x0-x1,x1),max(2*y0-y1,y1));
     }
 }
