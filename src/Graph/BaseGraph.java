@@ -32,6 +32,14 @@ public class BaseGraph {
         right=new Tuple<Double,Double>(max(2*x0-x1,x1),max(2*y0-y1,y1));
     }
 
+    public Tuple<Double, Double> getLeft() {
+        return left;
+    }
+
+    public Tuple<Double, Double> getRight() {
+        return right;
+    }
+
     public void save()
     {
 

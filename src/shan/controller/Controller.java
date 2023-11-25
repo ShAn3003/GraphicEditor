@@ -26,6 +26,8 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class Controller {
     @FXML
     private MyCanvas canvas;
@@ -180,7 +182,6 @@ public class Controller {
 
         paraSetInter.getChildren().addAll(textColorLabel, textColorPicker, textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox);
     }
-
     @FXML
     private void pressOnFigure(ActionEvent event) {
         if (event.getSource() instanceof Button clickedButton) {
@@ -215,8 +216,8 @@ public class Controller {
         // 设置边界颜色
         gc.setStroke(borderColor);
         // 设置边界宽度
-        gc.setLineWidth(1);
-        // 设置圆的颜色
+        gc.setLineWidth(lineWidth);
+        // 设置颜色
         gc.setFill(fillColor);
 
         // 绘制圆
@@ -227,7 +228,7 @@ public class Controller {
     }
     private void drawPencil(double centerX, double centerY) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        double radius = 5;
+        double radius = lineWidth;
 
         // 设置笔触的颜色
         gc.setFill(fillColor);
@@ -235,16 +236,44 @@ public class Controller {
         // 绘制圆
         gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
     }
-    private void drawRectangle(double x0,double y0,double centerX, double centerY) {
+    private void drawRectangle(double x0,double y0,double w, double l) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        //底色
+        // 设置边界颜色
+        gc.setStroke(borderColor);
+        // 设置边界宽度
+        gc.setLineWidth(lineWidth);
+        // 设置颜色
         gc.setFill(fillColor);
+
         //清除之前的矩形，实现实时化
         //gc.clearRect(x0, y0,centerX-x0,centerY-y0);
         //绘制矩形
-        gc.fillRect(x0, y0,centerX-x0,centerY-y0);
+        gc.fillRect(x0, y0,w,l);
+        gc.strokeRect(x0, y0,w,l);
         // 绘制矩形
 
+    }
+
+    private void drawLine(double x0,double y0,double x1, double y1) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        // 设置直线颜色
+        gc.setStroke(borderColor);
+        // 设置边界宽度
+        gc.setLineWidth(lineWidth);
+        //绘制直线
+        gc.strokeLine(x0, y0,x1,y1);
+    }
+    private void drawEllipse(double centerX, double centerY, double radiusX, double radiusY) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        // 设置填充颜色
+        gc.setFill(fillColor);
+        // 设置边界颜色
+        gc.setStroke(borderColor);
+        // 设置边界宽度
+        gc.setLineWidth(lineWidth);
+        // 绘制椭圆
+        gc.fillOval(centerX - radiusX, centerY - radiusY, 2 * radiusX, 2 * radiusY);
+        gc.strokeOval(centerX - radiusX, centerY - radiusY, 2 * radiusX, 2 * radiusY);
     }
     @FXML
     private  void canvasMouseClicked(MouseEvent event)
@@ -263,8 +292,6 @@ public class Controller {
 
     private void test(){
     }
-
-
 
     @FXML
     public void canvasMouseDragEnter(MouseDragEvent event)
@@ -285,6 +312,8 @@ public class Controller {
         {
             double mouseX = event.getX();
             double mouseY = event.getY();
+            Point p= (Point) graphList.remove(graphList.size()-1);
+            p.add(mouseX,mouseY);
             // 执行绘制的动作，传递鼠标位置
             drawPencil(mouseX, mouseY);
         }
@@ -294,12 +323,10 @@ public class Controller {
     // 当鼠标拖拽在 Canvas 上悬停时触发。
     {
     }
-
     @FXML
     public void canvasMouseDragReleased(MouseDragEvent event)
     //当鼠标拖拽释放时触发。
     {
-
     }
     @FXML
     public void canvasMouseEntered(MouseEvent event)
@@ -329,8 +356,28 @@ public class Controller {
         }
         else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
         {
+            Rectangle rect=new Rectangle(mouseX,mouseY,mouseX,mouseY);
             //
+            graphList.add(rect);
         }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.LINE)
+        {
+            Line l=new Line(mouseX,mouseY,mouseX,mouseY);
+            //
+            graphList.add(l);
+        }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.ELLIPSE)
+        {
+            Ellipse e=new Ellipse(mouseX,mouseY,0,0);
+            //
+            graphList.add(e);
+        } else if (canvas.getCurrentMode()== MyCanvas.MyCanvasMode.POINT)
+        {
+            Point p=new Point(mouseX,mouseY);
+            //
+            graphList.add(p);
+        }
+
     }
     @FXML
     public void canvasMouseMoved(MouseEvent event)
@@ -346,7 +393,6 @@ public class Controller {
         double mouseY = event.getY();
         if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.CIRCLE)
         {
-            System.out.println("鼠标松开");
             try{
                 Round circle= (Round) graphList.remove(graphList.size() - 1);
                 Tuple<Double,Double>coord =circle.getCoord0();
@@ -361,7 +407,43 @@ public class Controller {
         }
         else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
         {
-            drawRectangle(mouseX,mouseY,10,10);
+            try{
+                Tuple<Double,Double> coord1= graphList.remove(graphList.size() - 1).getCoord0();
+                Rectangle rect=new Rectangle(coord1.first(),coord1.second(),mouseX,mouseY);
+                coord1=rect.getLeft();
+                Tuple<Double,Double>coord2 =rect.getRight();
+                drawRectangle(coord1.first(),coord1.second(),coord2.first()-coord1.first(),coord2.second()-coord1.second());
+                graphList.add(rect);
+            }catch(NullPointerException e)
+            {
+                System.out.println("图形列表为空");
+            }
+        }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.LINE)
+        {
+            try{
+                Tuple<Double,Double> coord1= graphList.remove(graphList.size() - 1).getCoord0();
+                Line l=new Line(coord1.first(),coord1.second(),mouseX,mouseY);
+                drawLine(coord1.first(),coord1.second(),mouseX,mouseY);
+                graphList.add(l);
+            }catch(NullPointerException e)
+            {
+                System.out.println("图形列表为空");
+            }
+        }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.ELLIPSE)
+        {
+            try{
+                Tuple<Double,Double> coord1= graphList.remove(graphList.size() - 1).getCoord0();
+                double a=abs(coord1.first()-mouseX);
+                double b=abs(coord1.second()-mouseY);
+                Ellipse e=new Ellipse(coord1.first(),coord1.second(),a,b);
+                drawEllipse(coord1.first(),coord1.second(),a,b);
+                graphList.add(e);
+            }catch(NullPointerException e)
+            {
+                System.out.println("图形列表为空");
+            }
         }
     }
 }

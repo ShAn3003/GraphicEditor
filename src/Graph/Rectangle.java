@@ -15,6 +15,10 @@ public class Rectangle extends BaseGraph{
         SetBound(x0,y0,x1,y1);
     }
 
+    public void setCoord1(double x,double y) {
+        this.coord1 = new Tuple<Double,Double>(x,y);
+    }
+
     public void save()
     {
         //
