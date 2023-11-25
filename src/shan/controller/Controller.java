@@ -1,5 +1,6 @@
 package shan.controller;
 
+import Graph.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +22,10 @@ import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Controller {
     @FXML
     private MyCanvas canvas;
@@ -33,11 +38,11 @@ public class Controller {
 
     @FXML
     private MyTextArea remarkArea;
-
     public MyCanvas.MyCanvasMode getCanvasMode()
     {
         return canvas.getCurrentMode();
     }
+    private List<BaseGraph> graphList;
     private Color fillColor;
 
     private Color borderColor;
@@ -113,7 +118,6 @@ public class Controller {
         paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker);
     }
 
-
     private void setLinePara() {
         paraSetInter.getChildren().clear();
 
@@ -140,8 +144,6 @@ public class Controller {
 
         paraSetInter.getChildren().addAll(lineColorLabel, lineColorPicker, lineWidthLabel, lineWidthComboBox);
     }
-
-
 
     private void setTextBoxPara() {
         paraSetInter.getChildren().clear();
@@ -179,7 +181,6 @@ public class Controller {
         paraSetInter.getChildren().addAll(textColorLabel, textColorPicker, textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox);
     }
 
-
     @FXML
     private void pressOnFigure(ActionEvent event) {
         if (event.getSource() instanceof Button clickedButton) {
@@ -208,6 +209,43 @@ public class Controller {
         }
     }
 
+    private void drawCircle(double centerX, double centerY,double r) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        double radius = r;
+        // 设置边界颜色
+        gc.setStroke(borderColor);
+        // 设置边界宽度
+        gc.setLineWidth(1);
+        // 设置圆的颜色
+        gc.setFill(fillColor);
+
+        // 绘制圆
+        gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+        //绘制边界
+        gc.strokeOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+
+    }
+    private void drawPencil(double centerX, double centerY) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        double radius = 5;
+
+        // 设置笔触的颜色
+        gc.setFill(fillColor);
+
+        // 绘制圆
+        gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+    }
+    private void drawRectangle(double x0,double y0,double centerX, double centerY) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        //底色
+        gc.setFill(fillColor);
+        //清除之前的矩形，实现实时化
+        //gc.clearRect(x0, y0,centerX-x0,centerY-y0);
+        //绘制矩形
+        gc.fillRect(x0, y0,centerX-x0,centerY-y0);
+        // 绘制矩形
+
+    }
     @FXML
     private  void canvasMouseClicked(MouseEvent event)
     //当鼠标在 Canvas 上单击时触发。
@@ -216,23 +254,11 @@ public class Controller {
         {
             double mouseX = event.getX();
             double mouseY = event.getY();
-            // 执行绘制圆的动作，传递鼠标位置
-            drawCircle(mouseX, mouseY);
         }
-    }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
+        {
 
-    private void drawCircle(double centerX, double centerY) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        double radius = 100;
-
-        // 清空画布
-        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-
-        // 设置圆的颜色
-        gc.setFill(javafx.scene.paint.Color.BLUE);
-
-        // 绘制圆
-        gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+        }
     }
 
     private void test(){
@@ -241,12 +267,12 @@ public class Controller {
 
 
     @FXML
-    public void canvasMouseDragEnter(MouseDragEvent mouseDragEvent)
+    public void canvasMouseDragEnter(MouseDragEvent event)
     //当鼠标拖拽进入 Canvas 区域时触发
     {
     }
     @FXML
-    public void canvasMouseDragExit(MouseDragEvent mouseDragEvent)
+    public void canvasMouseDragExit(MouseDragEvent event)
     //当鼠标拖拽退出 Canvas 区域时触发。
     {
     }
@@ -255,17 +281,25 @@ public class Controller {
     public void canvasMouseDragged(MouseEvent event)
     //当鼠标在 Canvas 上拖拽时触发。
     {
+        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.POINT)
+        {
+            double mouseX = event.getX();
+            double mouseY = event.getY();
+            // 执行绘制的动作，传递鼠标位置
+            drawPencil(mouseX, mouseY);
+        }
     }
     @FXML
-    public void canvasMouseDragOver(MouseDragEvent mouseDragEvent)
+    public void canvasMouseDragOver(MouseDragEvent event)
     // 当鼠标拖拽在 Canvas 上悬停时触发。
     {
     }
 
     @FXML
-    public void canvasMouseDragReleased(MouseDragEvent mouseDragEvent)
-//    当鼠标拖拽释放时触发。
+    public void canvasMouseDragReleased(MouseDragEvent event)
+    //当鼠标拖拽释放时触发。
     {
+
     }
     @FXML
     public void canvasMouseEntered(MouseEvent event)
@@ -281,15 +315,53 @@ public class Controller {
     public void canvasMousePressed(MouseEvent event)
     //当鼠标在 Canvas 上按下时触发。
     {
+        double mouseX = event.getX();
+        double mouseY = event.getY();
+        if(graphList==null)
+        {
+            graphList=new ArrayList<>();
+        }
+        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.CIRCLE)
+        {
+            Round circle=new Round(mouseX,mouseY,0);
+            //生成圆的实例
+            graphList.add(circle);//此时半径为零
+        }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
+        {
+            //
+        }
     }
     @FXML
     public void canvasMouseMoved(MouseEvent event)
     //当鼠标在 Canvas 上移动时触发
     {
+
     }
     @FXML
     public void cavasMouseReleased(MouseEvent event)
     //当鼠标在 Canvas 上释放时触发。
     {
+        double mouseX = event.getX();
+        double mouseY = event.getY();
+        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.CIRCLE)
+        {
+            System.out.println("鼠标松开");
+            try{
+                Round circle= (Round) graphList.remove(graphList.size() - 1);
+                Tuple<Double,Double>coord =circle.getCoord0();
+                double dis=Math.sqrt(Math.pow((mouseX - coord.first()), 2) + Math.pow((mouseY - coord.second()), 2));
+                drawCircle(coord.first(),coord.second(),dis);
+                circle.setRadius(dis);
+                graphList.add(circle);
+            }catch(NullPointerException e)
+            {
+                System.out.println("图形列表为空");
+            }
+        }
+        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
+        {
+            drawRectangle(mouseX,mouseY,10,10);
+        }
     }
 }

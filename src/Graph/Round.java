@@ -1,15 +1,24 @@
 package Graph;
 public class Round extends BaseGraph{
-    private float radius;
-    public Round(float x,float y,float r)
+    private double radius;
+    public Round(double x,double y,double r)
     {
         this.setCoord0(x,y);
         this.radius=r;
         SetBound(x,y,r);
     }
-    public void SetBound(float x,float y,float r)
+    public void setRadius(double r)
     {
-        left=new Tuple<Float,Float>(x-r,y-r);
-        right=new Tuple<Float,Float>(x+r,y+r);
+        radius=r;
+    }
+    public void SetBound(double x,double y,double r)
+    {
+        left=new Tuple<Double,Double>(x-r,y-r);
+        right=new Tuple<Double,Double>(x+r,y+r);
+    }
+
+    public void save()
+    {
+        //
     }
 }

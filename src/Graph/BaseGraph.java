@@ -1,25 +1,39 @@
 package Graph;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class BaseGraph {
-    private Tuple<Float,Float> coord0;
+    private Tuple<Double,Double> coord0;
     //定位点，
     //边界框左上角，
-    public Tuple<Float,Float> left;
+    public Tuple<Double,Double> left;
     //边界框右下角，
-    public Tuple<Float,Float> right;
+    public Tuple<Double,Double> right;
 
-    public BaseGraph(float a,float b) {
+    public BaseGraph(double a,double b) {
 
     }
     public BaseGraph() {
 
     }
     // Getter和Setter方法
-    void setCoord0(float a,float b)
+    void setCoord0(double a,double b)
     {
-        coord0=new Tuple<Float,Float>(a,b);
+        coord0=new Tuple<Double,Double>(a,b);
     }
-    Tuple<Float,Float> getCoord0()
+    public Tuple<Double,Double> getCoord0()
     {
         return this.coord0;
+    }
+    public void SetBound(double x0,double y0,double x1,double y1)
+    {
+        left=new Tuple<Double,Double>(min(2*x0-x1,x1),min(2*y0-y1,y1));
+        right=new Tuple<Double,Double>(max(2*x0-x1,x1),max(2*y0-y1,y1));
+    }
+
+    public void save()
+    {
+
     }
 }
