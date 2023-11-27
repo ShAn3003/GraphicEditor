@@ -13,6 +13,8 @@
 <?import shan.interfaces.MyCanvas?>
 <?import shan.interfaces.MyVBox?>
 <?import shan.interfaces.MyTextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.event.EventHandler?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="shan.controller.Controller">
@@ -54,10 +56,7 @@
             <Button text="Ellipse"
                     style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
                     minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
-
-
         </MyVBox>
-
 
     </left>
     <center>

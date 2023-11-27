@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -50,7 +51,7 @@ public class Controller {
 
     @FXML
     private MyCanvas canvas;
-
+    private TextField textField;
     @FXML
     private MyVBox figureBox;
 
@@ -106,7 +107,7 @@ public class Controller {
             System.out.println("Selected Line Width: " + lineWidth);
             // 更新线条宽度--Func
         });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker, lineWidthLabel, lineWidthComboBox);
     }
 
     private void setEllipsePara() {
@@ -138,7 +139,7 @@ public class Controller {
             System.out.println("Selected Line Width: " + lineWidth);
             // 更新线条宽度--Func
         });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker, lineWidthLabel, lineWidthComboBox);
     }
 
     private void setRectanglePara() {
@@ -172,7 +173,7 @@ public class Controller {
             System.out.println("Selected Line Width: " + lineWidth);
             // 更新线条宽度--Func
         });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker, lineWidthLabel, lineWidthComboBox);
     }
 
     private void setLinePara() {
@@ -348,16 +349,26 @@ public class Controller {
         gc.strokeOval(centerX - radiusX, centerY - radiusY, 2 * radiusX, 2 * radiusY);
     }
 
+    private void drawTextBox(double x0, double y0,String text) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        // 设置文本颜色
+        gc.setFill(textColor);
+
+        // 设置字体
+        Font font = Font.font(selectedFontStyle, textSize);
+
+        gc.setFont(font);
+        // 绘制文本
+        gc.fillText("Editable Text: " + text, 10, 20);
+        // 让画布获得焦点，以便可以接收键盘事件
+        canvas.requestFocus();
+    }
+
     @FXML
     private void canvasMouseClicked(MouseEvent event)
     //当鼠标在 Canvas 上单击时触发。
     {
-        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
-            double mouseX = event.getX();
-            double mouseY = event.getY();
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
 
-        }
     }
 
     private void test() {
@@ -387,6 +398,7 @@ public class Controller {
             p.add(mouseX, mouseY);
             // 执行绘制的动作，传递鼠标位置
             drawPencil(mouseX, mouseY);
+            graphList.add(p);
         }
     }
 
@@ -443,6 +455,13 @@ public class Controller {
             Point p = new Point(mouseX, mouseY);
             //
             graphList.add(p);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
+            TextBox t = new TextBox(mouseX, mouseY, mouseX, mouseY);
+            //
+            t.setSelectedFontStyle(selectedFontStyle);
+            t.setTextColor(textColor);
+            t.setTextSize(textSize);
+            graphList.add(t);
         }
 
     }
