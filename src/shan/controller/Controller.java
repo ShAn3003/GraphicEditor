@@ -45,6 +45,7 @@ public class Controller {
         textColor = Color.BLACK;
         textSize = 12.0;
         selectedFontStyle = "华文仿宋";
+        textFiled = "";
 
     }
 
@@ -60,12 +61,13 @@ public class Controller {
     @FXML
     private MyTextArea remarkArea;
 
+    private String messageBox;
+
     public MyCanvas.MyCanvasMode getCanvasMode() {
         return canvas.getCurrentMode();
     }
 
     private List<BaseGraph> graphList;
-
 
     private Color fillColor;
     private Color borderColor;
@@ -75,92 +77,27 @@ public class Controller {
     private Double textSize;
     private Color textColor;
     private String selectedFontStyle;
+    private String textFiled;
 
-    private void setCirclePara() {
-        paraSetInter.getChildren().clear();
-        Label fillColorLabel = new Label("Fill-Color");
-        ColorPicker fillColorPicker = new ColorPicker(fillColor);
-        fillColorPicker.setValue(Color.WHITE);
-        fillColorPicker.setOnAction(fillColorEvent -> {
-            fillColor = fillColorPicker.getValue();
-            System.out.println("Selected Fill Color: " + fillColor.toString());
-            // 更新填充颜色--Func
-        });
-
-        Label borderColorLabel = new Label("Border-Color");
-        ColorPicker borderColorPicker = new ColorPicker(borderColor);
-        borderColorPicker.setValue(Color.BLACK);
-        borderColorPicker.setOnAction(borderColorEvent -> {
-            borderColor = borderColorPicker.getValue();
-            System.out.println("Selected Border Color: " + borderColor.toString());
-            // 更新边界颜色--Func
-        });
-        Label lineWidthLabel = new Label("Border-Width");
-        ComboBox<Double> lineWidthComboBox = new ComboBox<>();
-        ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
-                1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
-        lineWidthComboBox.setItems(lineWidthOptions);
-        lineWidthComboBox.setValue(lineWidth);
-        lineWidthComboBox.setOnAction(lineWidthEvent -> {
-            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
-            System.out.println("Selected Line Width: " + lineWidth);
-            // 更新线条宽度--Func
-        });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
-    }
-
-    private void setEllipsePara() {
+    private void setShapeParameters(String shapeType, Color fillColor, Color borderColor, double lineWidth) {
         paraSetInter.getChildren().clear();
 
         Label fillColorLabel = new Label("Fill-Color");
         ColorPicker fillColorPicker = new ColorPicker(fillColor);
         fillColorPicker.setOnAction(fillColorEvent -> {
-            fillColor = fillColorPicker.getValue();
-            System.out.println("Selected Fill Color for Ellipse: " + fillColor.toString());
-            // 更新椭圆填充颜色--Func
-        });
-
-        Label borderColorLabel = new Label("Border-Color");
-        ColorPicker borderColorPicker = new ColorPicker(borderColor);
-        borderColorPicker.setOnAction(borderColorEvent -> {
-            borderColor = borderColorPicker.getValue();
-            System.out.println("Selected Border Color for Ellipse: " + borderColor.toString());
-            // 更新椭圆边界颜色--Func
-        });
-        Label lineWidthLabel = new Label("Border-Width");
-        ComboBox<Double> lineWidthComboBox = new ComboBox<>();
-        ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
-                1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
-        lineWidthComboBox.setItems(lineWidthOptions);
-        lineWidthComboBox.setValue(lineWidth);
-        lineWidthComboBox.setOnAction(lineWidthEvent -> {
-            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
-            System.out.println("Selected Line Width: " + lineWidth);
-            // 更新线条宽度--Func
-        });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
-    }
-
-    private void setRectanglePara() {
-        paraSetInter.getChildren().clear();
-
-        Label fillColorLabel = new Label("Fill-Color");
-        ColorPicker fillColorPicker = new ColorPicker(fillColor);
-        fillColorPicker.setOnAction(fillColorEvent -> {
-            fillColor = fillColorPicker.getValue();
-            System.out.println("Selected Fill Color: " + fillColor.toString());
+            this.fillColor = fillColorPicker.getValue();
+            System.out.println("Selected Fill Color for " + shapeType + ": " + this.fillColor.toString());
             // 更新填充颜色--Func
         });
 
         Label borderColorLabel = new Label("Border-Color");
         ColorPicker borderColorPicker = new ColorPicker(borderColor);
         borderColorPicker.setOnAction(borderColorEvent -> {
-            borderColor = borderColorPicker.getValue();
-            System.out.println("Selected Border Color: " + borderColor.toString());
+            this.borderColor = borderColorPicker.getValue();
+            System.out.println("Selected Border Color for " + shapeType + ": " + this.borderColor.toString());
             // 更新边界颜色--Func
         });
 
-        // 添加其他矩形特有的参数设置组件，如果有的话
         Label lineWidthLabel = new Label("Border-Width");
         ComboBox<Double> lineWidthComboBox = new ComboBox<>();
         ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
@@ -168,13 +105,17 @@ public class Controller {
         lineWidthComboBox.setItems(lineWidthOptions);
         lineWidthComboBox.setValue(lineWidth);
         lineWidthComboBox.setOnAction(lineWidthEvent -> {
-            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
-            System.out.println("Selected Line Width: " + lineWidth);
+            this.lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
+            System.out.println("Selected Line Width for " + shapeType + ": " + this.lineWidth);
             // 更新线条宽度--Func
         });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
-    }
 
+        // 添加其他共有的参数设置组件，如果有的话
+
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker, lineWidthLabel, lineWidthComboBox);
+
+
+    }
     private void setLinePara() {
         paraSetInter.getChildren().clear();
 
@@ -202,6 +143,21 @@ public class Controller {
 
         paraSetInter.getChildren().addAll(lineColorLabel, lineColorPicker, lineWidthLabel, lineWidthComboBox);
     }
+    private void setCirclePara() {
+        setShapeParameters("Circle", Color.WHITE, Color.BLACK, 1.0);
+    }
+
+    private void setRectanglePara() {
+        setShapeParameters("Rectangle", Color.WHITE, Color.BLACK, 1.0);
+    }
+
+
+    private void setEllipsePara() {
+        setShapeParameters("Ellipse", Color.WHITE, Color.BLACK, 1.0);
+    }
+
+
+
 
     private void setTextBoxPara() {
         paraSetInter.getChildren().clear();
@@ -236,11 +192,42 @@ public class Controller {
             // 更新文本字体样式--Func
         });
 
+        Label textFiledLabel = new Label("Text");
+        TextArea textArea = new TextArea(textFiled);
+        // 添加ChangeListener来监听TextArea的文本变化
+        textArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Text in TextArea changed: " + newValue);
+            textFiled= newValue;
+            // 在这里处理文本变化后的逻辑
+        });
         // 添加其他文本框特有的参数设置组件，如果有的话
 
-        paraSetInter.getChildren().addAll(textColorLabel, textColorPicker, textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox);
+        paraSetInter.getChildren().addAll(textColorLabel, textColorPicker,
+                textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox,textFiledLabel,textArea);
     }
+    private void setDrawPara(){
+        paraSetInter.getChildren().clear();
 
+        Label fillColorLabel = new Label("Fill-Color");
+        ColorPicker fillColorPicker = new ColorPicker(fillColor);
+        fillColorPicker.setOnAction(fillColorEvent -> {
+            this.fillColor = fillColorPicker.getValue();
+            System.out.println("Selected Fill Color for " + "Draw" + ": " + this.fillColor.toString());
+            // 更新填充颜色--Func
+        });
+        Label lineWidthLabel = new Label("Line-Width");
+        ComboBox<Double> lineWidthComboBox = new ComboBox<>();
+        ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
+                1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
+        lineWidthComboBox.setItems(lineWidthOptions);
+        lineWidthComboBox.setValue(lineWidth);
+        lineWidthComboBox.setOnAction(lineWidthEvent -> {
+            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
+            System.out.println("Selected Line Width: " + lineWidth);
+            // 更新线条宽度--Func
+        });
+        paraSetInter.getChildren().addAll(fillColorLabel,fillColorPicker,lineWidthLabel,lineWidthComboBox);
+    }
     private void resetButtonStyles() {
         // Reset style for all buttons in the VBox
         for (Node node : figureBox.getChildren()) {
@@ -252,8 +239,15 @@ public class Controller {
 
     @FXML
     private void pressOnFigure(ActionEvent event) {
+        fillColor = Color.WHITE;
+        borderColor = Color.BLACK;
+        lineColor = Color.BLACK;
+        lineWidth = 1.0;
+        textColor = Color.BLACK;
+        textSize = 12.0;
+        selectedFontStyle = "华文仿宋";
+        textFiled = "";
         if (event.getSource() instanceof Button clickedButton) {
-
             resetButtonStyles();
 
             clickedButton.setStyle("-fx-font-size: 14px; -fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-border-color: #a80c0c; -fx-border-width: 3px; -fx-border-radius: 5px;");
@@ -275,6 +269,13 @@ public class Controller {
             } else if ("Ellipse".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.ELLIPSE);
                 setEllipsePara();
+            } else if ("Draw".equals(clickedButton.getText())) {
+                fillColor = Color.BLACK;
+                canvas.setCurrentMode(MyCanvas.MyCanvasMode.POINT);
+                setDrawPara();
+            } else if ("Select".equals(clickedButton.getText())) {
+                canvas.setCurrentMode(MyCanvas.MyCanvasMode.SELECT);
+//                setEllipsePara();
             }
         }
     }
@@ -328,7 +329,7 @@ public class Controller {
     private void drawLine(double x0, double y0, double x1, double y1) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 设置直线颜色
-        gc.setStroke(borderColor);
+        gc.setStroke(lineColor);
         // 设置边界宽度
         gc.setLineWidth(lineWidth);
         //绘制直线
@@ -387,6 +388,7 @@ public class Controller {
             p.add(mouseX, mouseY);
             // 执行绘制的动作，传递鼠标位置
             drawPencil(mouseX, mouseY);
+            graphList.add(p);
         }
     }
 
@@ -503,5 +505,32 @@ public class Controller {
                 System.out.println("图形列表为空");
             }
         }
+    }
+    @FXML
+    private void handleNew(ActionEvent event) {
+        // 处理“New”菜单项的逻辑
+        System.out.println("New MenuItem clicked");
+    }
+
+    @FXML
+    private void handleOpen(ActionEvent event) {
+        // 处理“Open”菜单项的逻辑
+        System.out.println("Open MenuItem clicked");
+    }
+
+    @FXML
+    private void handleSave(ActionEvent event) {
+        // 处理“Save”菜单项的逻辑
+        System.out.println("Save MenuItem clicked");
+    }
+    @FXML
+    private void handleRedo(ActionEvent event) {
+        // 处理“Redo”菜单项的逻辑
+        System.out.println("Redo MenuItem clicked");
+    }
+    @FXML
+    private void handleUndo(ActionEvent event) {
+        // 处理“Undo”菜单项的逻辑
+        System.out.println("Undo MenuItem clicked");
     }
 }
