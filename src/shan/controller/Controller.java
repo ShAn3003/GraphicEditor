@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.canvas.GraphicsContext;
@@ -62,17 +63,13 @@ public class Controller {
     public MyCanvas.MyCanvasMode getCanvasMode() {
         return canvas.getCurrentMode();
     }
-=======
-    public MyCanvas.MyCanvasMode getCanvasMode()
-    {
-        return canvas.getCurrentMode();
-    }
+
     private List<BaseGraph> graphList;
-    private Color fillColor;
->>>>>>> 978a12dd3aae039f988a89f08ba3173a0013398e
+
 
     private Color fillColor;
     private Color borderColor;
+
     private Color lineColor;
     private Double lineWidth;
     private Double textSize;
@@ -82,7 +79,8 @@ public class Controller {
     private void setCirclePara() {
         paraSetInter.getChildren().clear();
         Label fillColorLabel = new Label("Fill-Color");
-        ColorPicker fillColorPicker = new ColorPicker();
+        ColorPicker fillColorPicker = new ColorPicker(fillColor);
+        fillColorPicker.setValue(Color.WHITE);
         fillColorPicker.setOnAction(fillColorEvent -> {
             fillColor = fillColorPicker.getValue();
             System.out.println("Selected Fill Color: " + fillColor.toString());
@@ -90,20 +88,32 @@ public class Controller {
         });
 
         Label borderColorLabel = new Label("Border-Color");
-        ColorPicker borderColorPicker = new ColorPicker();
+        ColorPicker borderColorPicker = new ColorPicker(borderColor);
+        borderColorPicker.setValue(Color.BLACK);
         borderColorPicker.setOnAction(borderColorEvent -> {
             borderColor = borderColorPicker.getValue();
             System.out.println("Selected Border Color: " + borderColor.toString());
             // 更新边界颜色--Func
         });
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker);
+        Label lineWidthLabel = new Label("Border-Width");
+        ComboBox<Double> lineWidthComboBox = new ComboBox<>();
+        ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
+                1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
+        lineWidthComboBox.setItems(lineWidthOptions);
+        lineWidthComboBox.setValue(lineWidth);
+        lineWidthComboBox.setOnAction(lineWidthEvent -> {
+            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
+            System.out.println("Selected Line Width: " + lineWidth);
+            // 更新线条宽度--Func
+        });
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
     }
 
     private void setEllipsePara() {
         paraSetInter.getChildren().clear();
 
         Label fillColorLabel = new Label("Fill-Color");
-        ColorPicker fillColorPicker = new ColorPicker();
+        ColorPicker fillColorPicker = new ColorPicker(fillColor);
         fillColorPicker.setOnAction(fillColorEvent -> {
             fillColor = fillColorPicker.getValue();
             System.out.println("Selected Fill Color for Ellipse: " + fillColor.toString());
@@ -111,21 +121,31 @@ public class Controller {
         });
 
         Label borderColorLabel = new Label("Border-Color");
-        ColorPicker borderColorPicker = new ColorPicker();
+        ColorPicker borderColorPicker = new ColorPicker(borderColor);
         borderColorPicker.setOnAction(borderColorEvent -> {
             borderColor = borderColorPicker.getValue();
             System.out.println("Selected Border Color for Ellipse: " + borderColor.toString());
             // 更新椭圆边界颜色--Func
         });
-
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker);
+        Label lineWidthLabel = new Label("Border-Width");
+        ComboBox<Double> lineWidthComboBox = new ComboBox<>();
+        ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
+                1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
+        lineWidthComboBox.setItems(lineWidthOptions);
+        lineWidthComboBox.setValue(lineWidth);
+        lineWidthComboBox.setOnAction(lineWidthEvent -> {
+            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
+            System.out.println("Selected Line Width: " + lineWidth);
+            // 更新线条宽度--Func
+        });
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
     }
 
     private void setRectanglePara() {
         paraSetInter.getChildren().clear();
 
         Label fillColorLabel = new Label("Fill-Color");
-        ColorPicker fillColorPicker = new ColorPicker();
+        ColorPicker fillColorPicker = new ColorPicker(fillColor);
         fillColorPicker.setOnAction(fillColorEvent -> {
             fillColor = fillColorPicker.getValue();
             System.out.println("Selected Fill Color: " + fillColor.toString());
@@ -133,7 +153,7 @@ public class Controller {
         });
 
         Label borderColorLabel = new Label("Border-Color");
-        ColorPicker borderColorPicker = new ColorPicker();
+        ColorPicker borderColorPicker = new ColorPicker(borderColor);
         borderColorPicker.setOnAction(borderColorEvent -> {
             borderColor = borderColorPicker.getValue();
             System.out.println("Selected Border Color: " + borderColor.toString());
@@ -141,15 +161,25 @@ public class Controller {
         });
 
         // 添加其他矩形特有的参数设置组件，如果有的话
-
-        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker);
+        Label lineWidthLabel = new Label("Border-Width");
+        ComboBox<Double> lineWidthComboBox = new ComboBox<>();
+        ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
+                1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
+        lineWidthComboBox.setItems(lineWidthOptions);
+        lineWidthComboBox.setValue(lineWidth);
+        lineWidthComboBox.setOnAction(lineWidthEvent -> {
+            lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
+            System.out.println("Selected Line Width: " + lineWidth);
+            // 更新线条宽度--Func
+        });
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker,lineWidthLabel,lineWidthComboBox);
     }
 
     private void setLinePara() {
         paraSetInter.getChildren().clear();
 
         Label lineColorLabel = new Label("Line-Color");
-        ColorPicker lineColorPicker = new ColorPicker();
+        ColorPicker lineColorPicker = new ColorPicker(lineColor);
         lineColorPicker.setOnAction(lineColorEvent -> {
             lineColor = lineColorPicker.getValue();
             System.out.println("Selected Line Color: " + lineColor.toString());
@@ -161,6 +191,7 @@ public class Controller {
         ObservableList<Double> lineWidthOptions = FXCollections.observableArrayList(
                 1.0, 2.0, 3.0, 4.0, 5.0);  // 添加你想要的线条宽度选项
         lineWidthComboBox.setItems(lineWidthOptions);
+        lineWidthComboBox.setValue(lineWidth);
         lineWidthComboBox.setOnAction(lineWidthEvent -> {
             lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
             System.out.println("Selected Line Width: " + lineWidth);
@@ -176,7 +207,7 @@ public class Controller {
         paraSetInter.getChildren().clear();
 
         Label textColorLabel = new Label("Text-Color");
-        ColorPicker textColorPicker = new ColorPicker();
+        ColorPicker textColorPicker = new ColorPicker(textColor);
         textColorPicker.setOnAction(textColorEvent -> {
             textColor = textColorPicker.getValue();
             System.out.println("Selected Text Color: " + textColor.toString());
@@ -188,6 +219,7 @@ public class Controller {
         ObservableList<Double> textSizeOptions = FXCollections.observableArrayList(
                 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0);  // 添加你想要的文本大小选项
         textSizeComboBox.setItems(textSizeOptions);
+        textSizeComboBox.setValue(textSize);
         textSizeComboBox.setOnAction(textSizeEvent -> {
             textSize = textSizeComboBox.getSelectionModel().getSelectedItem();
             System.out.println("Selected Text Size: " + textSize);
@@ -197,6 +229,7 @@ public class Controller {
         Label fontStyleLabel = new Label("Font-Style");
         ComboBox<String> fontStyleComboBox = new ComboBox<>();
         fontStyleComboBox.getItems().addAll(Font.getFontNames());
+        fontStyleComboBox.setValue(selectedFontStyle);
         fontStyleComboBox.setOnAction(fontStyleEvent -> {
             selectedFontStyle = fontStyleComboBox.getSelectionModel().getSelectedItem();
             System.out.println("Selected Font Style: " + selectedFontStyle);
@@ -207,10 +240,24 @@ public class Controller {
 
         paraSetInter.getChildren().addAll(textColorLabel, textColorPicker, textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox);
     }
+
+    private void resetButtonStyles() {
+        // Reset style for all buttons in the VBox
+        for (Node node : figureBox.getChildren()) {
+            if (node instanceof Button) {
+                ((Button) node).setStyle("-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;");
+            }
+        }
+    }
+
     @FXML
     private void pressOnFigure(ActionEvent event) {
         if (event.getSource() instanceof Button clickedButton) {
-            // Now you have the reference to the clicked button
+
+            resetButtonStyles();
+
+            clickedButton.setStyle("-fx-font-size: 14px; -fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-border-color: #a80c0c; -fx-border-width: 3px; -fx-border-radius: 5px;");
+
             System.out.println("Clicked Button: " + clickedButton.getText());
             if ("Circle".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.CIRCLE);
@@ -232,7 +279,7 @@ public class Controller {
         }
     }
 
-    private void drawCircle(double centerX, double centerY,double r) {
+    private void drawCircle(double centerX, double centerY, double r) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         double radius = r;
         // 设置边界颜色
@@ -248,6 +295,7 @@ public class Controller {
         gc.strokeOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
 
     }
+
     private void drawPencil(double centerX, double centerY) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         double radius = lineWidth;
@@ -258,7 +306,8 @@ public class Controller {
         // 绘制圆
         gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
     }
-    private void drawRectangle(double x0,double y0,double w, double l) {
+
+    private void drawRectangle(double x0, double y0, double w, double l) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 设置边界颜色
         gc.setStroke(borderColor);
@@ -270,21 +319,22 @@ public class Controller {
         //清除之前的矩形，实现实时化
         //gc.clearRect(x0, y0,centerX-x0,centerY-y0);
         //绘制矩形
-        gc.fillRect(x0, y0,w,l);
-        gc.strokeRect(x0, y0,w,l);
+        gc.fillRect(x0, y0, w, l);
+        gc.strokeRect(x0, y0, w, l);
         // 绘制矩形
 
     }
 
-    private void drawLine(double x0,double y0,double x1, double y1) {
+    private void drawLine(double x0, double y0, double x1, double y1) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 设置直线颜色
         gc.setStroke(borderColor);
         // 设置边界宽度
         gc.setLineWidth(lineWidth);
         //绘制直线
-        gc.strokeLine(x0, y0,x1,y1);
+        gc.strokeLine(x0, y0, x1, y1);
     }
+
     private void drawEllipse(double centerX, double centerY, double radiusX, double radiusY) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // 设置填充颜色
@@ -297,6 +347,7 @@ public class Controller {
         gc.fillOval(centerX - radiusX, centerY - radiusY, 2 * radiusX, 2 * radiusY);
         gc.strokeOval(centerX - radiusX, centerY - radiusY, 2 * radiusX, 2 * radiusY);
     }
+
     @FXML
     private void canvasMouseClicked(MouseEvent event)
     //当鼠标在 Canvas 上单击时触发。
@@ -304,9 +355,7 @@ public class Controller {
         if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
             double mouseX = event.getX();
             double mouseY = event.getY();
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
-        {
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
 
         }
     }
@@ -314,10 +363,7 @@ public class Controller {
     private void test() {
     }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 978a12dd3aae039f988a89f08ba3173a0013398e
     @FXML
     public void canvasMouseDragEnter(MouseDragEvent event)
     //当鼠标拖拽进入 Canvas 区域时触发
@@ -334,12 +380,11 @@ public class Controller {
     public void canvasMouseDragged(MouseEvent event)
     //当鼠标在 Canvas 上拖拽时触发。
     {
-        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.POINT)
-        {
+        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.POINT) {
             double mouseX = event.getX();
             double mouseY = event.getY();
-            Point p= (Point) graphList.remove(graphList.size()-1);
-            p.add(mouseX,mouseY);
+            Point p = (Point) graphList.remove(graphList.size() - 1);
+            p.add(mouseX, mouseY);
             // 执行绘制的动作，传递鼠标位置
             drawPencil(mouseX, mouseY);
         }
@@ -350,6 +395,7 @@ public class Controller {
     // 当鼠标拖拽在 Canvas 上悬停时触发。
     {
     }
+
     @FXML
     public void canvasMouseDragReleased(MouseDragEvent event)
     //当鼠标拖拽释放时触发。
@@ -374,36 +420,27 @@ public class Controller {
     {
         double mouseX = event.getX();
         double mouseY = event.getY();
-        if(graphList==null)
-        {
-            graphList=new ArrayList<>();
+        if (graphList == null) {
+            graphList = new ArrayList<>();
         }
-        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.CIRCLE)
-        {
-            Round circle=new Round(mouseX,mouseY,0);
+        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
+            Round circle = new Round(mouseX, mouseY, 0);
             //生成圆的实例
             graphList.add(circle);//此时半径为零
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
-        {
-            Rectangle rect=new Rectangle(mouseX,mouseY,mouseX,mouseY);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
+            Rectangle rect = new Rectangle(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(rect);
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.LINE)
-        {
-            Line l=new Line(mouseX,mouseY,mouseX,mouseY);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.LINE) {
+            Line l = new Line(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(l);
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.ELLIPSE)
-        {
-            Ellipse e=new Ellipse(mouseX,mouseY,0,0);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.ELLIPSE) {
+            Ellipse e = new Ellipse(mouseX, mouseY, 0, 0);
             //
             graphList.add(e);
-        } else if (canvas.getCurrentMode()== MyCanvas.MyCanvasMode.POINT)
-        {
-            Point p=new Point(mouseX,mouseY);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.POINT) {
+            Point p = new Point(mouseX, mouseY);
             //
             graphList.add(p);
         }
@@ -423,57 +460,46 @@ public class Controller {
     {
         double mouseX = event.getX();
         double mouseY = event.getY();
-        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.CIRCLE)
-        {
-            try{
-                Round circle= (Round) graphList.remove(graphList.size() - 1);
-                Tuple<Double,Double>coord =circle.getCoord0();
-                double dis=Math.sqrt(Math.pow((mouseX - coord.first()), 2) + Math.pow((mouseY - coord.second()), 2));
-                drawCircle(coord.first(),coord.second(),dis);
+        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
+            try {
+                Round circle = (Round) graphList.remove(graphList.size() - 1);
+                Tuple<Double, Double> coord = circle.getCoord0();
+                double dis = Math.sqrt(Math.pow((mouseX - coord.first()), 2) + Math.pow((mouseY - coord.second()), 2));
+                drawCircle(coord.first(), coord.second(), dis);
                 circle.setRadius(dis);
                 graphList.add(circle);
-            }catch(NullPointerException e)
-            {
+            } catch (NullPointerException e) {
                 System.out.println("图形列表为空");
             }
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.RECTANGLE)
-        {
-            try{
-                Tuple<Double,Double> coord1= graphList.remove(graphList.size() - 1).getCoord0();
-                Rectangle rect=new Rectangle(coord1.first(),coord1.second(),mouseX,mouseY);
-                coord1=rect.getLeft();
-                Tuple<Double,Double>coord2 =rect.getRight();
-                drawRectangle(coord1.first(),coord1.second(),coord2.first()-coord1.first(),coord2.second()-coord1.second());
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
+            try {
+                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
+                Rectangle rect = new Rectangle(coord1.first(), coord1.second(), mouseX, mouseY);
+                coord1 = rect.getLeft();
+                Tuple<Double, Double> coord2 = rect.getRight();
+                drawRectangle(coord1.first(), coord1.second(), coord2.first() - coord1.first(), coord2.second() - coord1.second());
                 graphList.add(rect);
-            }catch(NullPointerException e)
-            {
+            } catch (NullPointerException e) {
                 System.out.println("图形列表为空");
             }
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.LINE)
-        {
-            try{
-                Tuple<Double,Double> coord1= graphList.remove(graphList.size() - 1).getCoord0();
-                Line l=new Line(coord1.first(),coord1.second(),mouseX,mouseY);
-                drawLine(coord1.first(),coord1.second(),mouseX,mouseY);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.LINE) {
+            try {
+                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
+                Line l = new Line(coord1.first(), coord1.second(), mouseX, mouseY);
+                drawLine(coord1.first(), coord1.second(), mouseX, mouseY);
                 graphList.add(l);
-            }catch(NullPointerException e)
-            {
+            } catch (NullPointerException e) {
                 System.out.println("图形列表为空");
             }
-        }
-        else if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.ELLIPSE)
-        {
-            try{
-                Tuple<Double,Double> coord1= graphList.remove(graphList.size() - 1).getCoord0();
-                double a=abs(coord1.first()-mouseX);
-                double b=abs(coord1.second()-mouseY);
-                Ellipse e=new Ellipse(coord1.first(),coord1.second(),a,b);
-                drawEllipse(coord1.first(),coord1.second(),a,b);
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.ELLIPSE) {
+            try {
+                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
+                double a = abs(coord1.first() - mouseX);
+                double b = abs(coord1.second() - mouseY);
+                Ellipse e = new Ellipse(coord1.first(), coord1.second(), a, b);
+                drawEllipse(coord1.first(), coord1.second(), a, b);
                 graphList.add(e);
-            }catch(NullPointerException e)
-            {
+            } catch (NullPointerException e) {
                 System.out.println("图形列表为空");
             }
         }
