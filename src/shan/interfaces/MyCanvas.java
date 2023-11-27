@@ -9,7 +9,8 @@ public class MyCanvas extends Canvas {
         TEXTBOX,
         LINE,
         ELLIPSE,
-        POINT
+        POINT,
+        SELECT
     }
     private MyCanvasMode currentMode;
     public MyCanvas()

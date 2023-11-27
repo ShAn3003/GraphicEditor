@@ -1,26 +1,26 @@
 package Graph;
 
+import java.util.Set;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class Rectangle extends BaseGraph{
-    private Tuple coord2;
-    private Tuple coord3;
-    private Tuple coord4;
-    public Rectangle(Tuple a,Tuple b,Tuple c,Tuple d)
+    private Tuple<Double,Double> coord1;
+
+    public Rectangle(double x0,double y0,double x1,double y1)
     {
-        this.SetCoord(a);
-        this.coord2 = b;
-        this.coord3 = c;
-        this.coord4 = d;
+        setCoord0(x0,y0);
+        coord1=new Tuple<Double,Double>(x1,y1);
+        SetBound(x0,y0,x1,y1);
     }
-    public void SetBound()
+
+    public void setCoord1(double x,double y) {
+        this.coord1 = new Tuple<Double,Double>(x,y);
+    }
+
+    public void save()
     {
-        this.left=new Tuple(
-                min(min(getcoord().first(),coord2.first()),min(coord3.first(),coord4.first())),
-                max(max(getcoord().second(),coord2.second()),max(coord3.second(),coord4.second())));
-        this.right=new Tuple(
-                max(max(getcoord().first(),coord2.first()),max(coord3.first(),coord4.first())),
-                min(min(getcoord().second(),coord2.second()),min(coord3.second(),coord4.second())));
+        //
     }
 }
