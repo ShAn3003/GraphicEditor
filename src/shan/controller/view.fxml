@@ -13,31 +13,27 @@
 <?import shan.interfaces.MyCanvas?>
 <?import shan.interfaces.MyVBox?>
 <?import shan.interfaces.MyTextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.event.EventHandler?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.input.KeyCodeCombination?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="shan.controller.Controller">
     <top>
         <MenuBar>
             <Menu mnemonicParsing="false" text="File">
-                <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="New"/>-->
-                <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Open"/>-->
-                <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Save"/>-->
-                <MenuItem mnemonicParsing="false" text="New"/>
-                <MenuItem mnemonicParsing="false" text="Open"/>
-                <MenuItem mnemonicParsing="false" text="Save"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleNew" text="New"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Edit">
-                <!--                    <MenuItem fx:id="menuRedo" disable="true" mnemonicParsing="false" onAction="" text="Redo"/>-->
-<!--                                    <MenuItem fx:id="menuUndo" disable="true" mnemonicParsing="false" onAction="" text="Undo"/>-->
-                <MenuItem disable="true" mnemonicParsing="false" text="Redo"/>
-                <MenuItem disable="true" mnemonicParsing="false" text="Undo"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleRedo" text="Redo"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleUndo" text="Undo"/>
+
             </Menu>
         </MenuBar>
     </top>
     <left>
-        <MyVBox fx:id="figureBox" prefHeight="800" prefWidth="120" alignment="BASELINE_CENTER"
+        <MyVBox fx:id="figureBox" prefHeight="800" prefWidth="120" alignment="TOP_CENTER"
                 style="-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-spacing: 10;">
 
 
@@ -56,7 +52,16 @@
             <Button text="Ellipse"
                     style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
                     minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Draw"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Select"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+
+
         </MyVBox>
+
 
     </left>
     <center>
