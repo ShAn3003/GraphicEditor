@@ -1,18 +1,19 @@
 package Graph;
-public class Tuple {//辅助类
-    private float _first;
-    private float _second;
 
-    public Tuple(float i,float j) {
-        this._first = i;
-        this._second = j;
+public class Tuple<T1, T2> {
+    private T1 _first;
+    private T2 _second;
+
+    public Tuple(T1 item1, T2 item2) {
+        this._first = item1;
+        this._second = item2;
     }
 
-    public float first() {
-        return this._first;
+    public T1 first() {
+        return _first;
     }
 
-    public float second() {
-        return this._second;
+    public T2 second() {
+        return _second;
     }
 }
