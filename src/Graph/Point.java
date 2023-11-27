@@ -1,14 +1,20 @@
 package Graph;
 
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Point extends BaseGraph{
     private List<Tuple<Double,Double>> points;//除定位点以外的点
-    public Point(double x,double y)
+    private Color fillcolor;
+    private double lineWidth;
+    public Point(double x,double y,Color fillcolor,double lineWidth)
     {
         setCoord0(x,y);
         points=new ArrayList<>();
+        this.fillcolor=fillcolor;
+        this.lineWidth=lineWidth;
     }
     public List<Tuple<Double,Double>> getPoints()
     {
