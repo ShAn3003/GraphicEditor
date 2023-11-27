@@ -40,8 +40,8 @@ public class BaseGraph {
         return right;
     }
 
-    public void save()
+    public String save()
     {
-
+        return "";
     }
 }

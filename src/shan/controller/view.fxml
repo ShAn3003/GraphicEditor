@@ -24,7 +24,7 @@
                 <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Save"/>-->
                 <MenuItem mnemonicParsing="false" text="New"/>
                 <MenuItem mnemonicParsing="false" text="Open"/>
-                <MenuItem mnemonicParsing="false" text="Save"/>
+                <MenuItem mnemonicParsing="false" text="Save" onAction="#handleSave"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Edit">
                 <!--                    <MenuItem fx:id="menuRedo" disable="true" mnemonicParsing="false" onAction="" text="Redo"/>-->
