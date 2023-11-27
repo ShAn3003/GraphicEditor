@@ -7,9 +7,9 @@ public class BaseGraph {
     private Tuple<Double,Double> coord0;
     //定位点，
     //边界框左上角，
-    private Tuple<Double,Double> left;
+    public Tuple<Double,Double> left;
     //边界框右下角，
-    private Tuple<Double,Double> right;
+    public Tuple<Double,Double> right;
 
     public BaseGraph(double a,double b) {
 
