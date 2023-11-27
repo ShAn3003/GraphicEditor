@@ -14,9 +14,10 @@ public class TextBox extends BaseGraph{
         coord1=new Tuple<Double,Double>(x1,y1);
         SetBound(x0,y0,x1,y1);
         setText("");
+        setType(GRAPHTYPE.TEXTBOX);
     }
     public void SetBound(double x0, double y0, double x1, double y1) {
-        super.SetBound((x0+x1)/2,(y0+y1)/2, x1, y1);
+        super.SetBound(x0,y0, x1, y1);
     }
 
     public void setSelectedFontStyle(String selectedFontStyle) {
@@ -35,4 +36,15 @@ public class TextBox extends BaseGraph{
         this.text = text;
     }
 
+    public Double getTextSize() {
+        return textSize;
+    }
+
+    public Color getTextColor() {
+        return textColor;
+    }
+
+    public String getSelectedFontStyle() {
+        return selectedFontStyle;
+    }
 }
