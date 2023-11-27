@@ -22,6 +22,24 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 
 public class Controller {
+    public Controller() {
+        System.out.println("Controller Start!");
+    }
+
+    @FXML
+    private void initialize() {
+        System.out.println("Initialize Called!");
+//        各种参数变量初始化
+        fillColor = Color.WHITE;
+        borderColor = Color.BLACK;
+        lineColor = Color.BLACK;
+        lineWidth = 1.0;
+        textColor = Color.BLACK;
+        textSize = 12.0;
+        selectedFontStyle = "华文仿宋";
+
+    }
+
     @FXML
     private MyCanvas canvas;
 
@@ -34,21 +52,19 @@ public class Controller {
     @FXML
     private MyTextArea remarkArea;
 
-    public MyCanvas.MyCanvasMode getCanvasMode()
-    {
+    public MyCanvas.MyCanvasMode getCanvasMode() {
         return canvas.getCurrentMode();
     }
+
     private Color fillColor;
-
     private Color borderColor;
-
     private Color lineColor;
     private Double lineWidth;
-
     private Double textSize;
     private Color textColor;
     private String selectedFontStyle;
-    private void setCirclePara(){
+
+    private void setCirclePara() {
         paraSetInter.getChildren().clear();
         Label fillColorLabel = new Label("Fill-Color");
         ColorPicker fillColorPicker = new ColorPicker();
@@ -67,6 +83,7 @@ public class Controller {
         });
         paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, borderColorLabel, borderColorPicker);
     }
+
     private void setEllipsePara() {
         paraSetInter.getChildren().clear();
 
@@ -142,7 +159,6 @@ public class Controller {
     }
 
 
-
     private void setTextBoxPara() {
         paraSetInter.getChildren().clear();
 
@@ -192,16 +208,13 @@ public class Controller {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.LINE);
                 setLinePara();
 
-            }else if("Rectangle".equals(clickedButton.getText()))
-            {
+            } else if ("Rectangle".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.RECTANGLE);
                 setRectanglePara();
-            }else if("Text".equals(clickedButton.getText()))
-            {
+            } else if ("Text".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.TEXTBOX);
                 setTextBoxPara();
-            }else if("Ellipse".equals(clickedButton.getText()))
-            {
+            } else if ("Ellipse".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.ELLIPSE);
                 setEllipsePara();
             }
@@ -209,11 +222,10 @@ public class Controller {
     }
 
     @FXML
-    private  void canvasMouseClicked(MouseEvent event)
+    private void canvasMouseClicked(MouseEvent event)
     //当鼠标在 Canvas 上单击时触发。
     {
-        if(canvas.getCurrentMode()== MyCanvas.MyCanvasMode.CIRCLE)
-        {
+        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
             double mouseX = event.getX();
             double mouseY = event.getY();
             // 执行绘制圆的动作，传递鼠标位置
@@ -235,9 +247,8 @@ public class Controller {
         gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
     }
 
-    private void test(){
+    private void test() {
     }
-
 
 
     @FXML
@@ -245,6 +256,7 @@ public class Controller {
     //当鼠标拖拽进入 Canvas 区域时触发
     {
     }
+
     @FXML
     public void canvasMouseDragExit(MouseDragEvent mouseDragEvent)
     //当鼠标拖拽退出 Canvas 区域时触发。
@@ -256,6 +268,7 @@ public class Controller {
     //当鼠标在 Canvas 上拖拽时触发。
     {
     }
+
     @FXML
     public void canvasMouseDragOver(MouseDragEvent mouseDragEvent)
     // 当鼠标拖拽在 Canvas 上悬停时触发。
@@ -267,26 +280,31 @@ public class Controller {
 //    当鼠标拖拽释放时触发。
     {
     }
+
     @FXML
     public void canvasMouseEntered(MouseEvent event)
     //当鼠标进入 Canvas 区域时触发
     {
     }
+
     @FXML
     public void canvasMouseExited(MouseEvent event)
     //当鼠标退出 Canvas 区域时触发。
     {
     }
+
     @FXML
     public void canvasMousePressed(MouseEvent event)
     //当鼠标在 Canvas 上按下时触发。
     {
     }
+
     @FXML
     public void canvasMouseMoved(MouseEvent event)
     //当鼠标在 Canvas 上移动时触发
     {
     }
+
     @FXML
     public void cavasMouseReleased(MouseEvent event)
     //当鼠标在 Canvas 上释放时触发。

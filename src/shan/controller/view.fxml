@@ -13,24 +13,25 @@
 <?import shan.interfaces.MyCanvas?>
 <?import shan.interfaces.MyVBox?>
 <?import shan.interfaces.MyTextArea?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="shan.controller.Controller">
     <top>
         <MenuBar>
-                <Menu mnemonicParsing="false" text="File">
-<!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="New"/>-->
-<!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Open"/>-->
-<!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Save"/>-->
-                        <MenuItem mnemonicParsing="false"  text="New"/>
-                        <MenuItem mnemonicParsing="false"  text="Open"/>
-                        <MenuItem mnemonicParsing="false"  text="Save"/>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-<!--                    <MenuItem fx:id="menuRedo" disable="true" mnemonicParsing="false" onAction="" text="Redo"/>-->
-<!--                    <MenuItem fx:id="menuUndo" disable="true" mnemonicParsing="false" onAction="" text="Undo"/>-->
-                    <MenuItem disable="true" mnemonicParsing="false" text="Redo"/>
-                    <MenuItem disable="true" mnemonicParsing="false" text="Undo"/>
-                </Menu>
+            <Menu mnemonicParsing="false" text="File">
+                <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="New"/>-->
+                <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Open"/>-->
+                <!--                        <MenuItem mnemonicParsing="false" onAction="#bland_??" text="Save"/>-->
+                <MenuItem mnemonicParsing="false" text="New"/>
+                <MenuItem mnemonicParsing="false" text="Open"/>
+                <MenuItem mnemonicParsing="false" text="Save"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <!--                    <MenuItem fx:id="menuRedo" disable="true" mnemonicParsing="false" onAction="" text="Redo"/>-->
+<!--                                    <MenuItem fx:id="menuUndo" disable="true" mnemonicParsing="false" onAction="" text="Undo"/>-->
+                <MenuItem disable="true" mnemonicParsing="false" text="Redo"/>
+                <MenuItem disable="true" mnemonicParsing="false" text="Undo"/>
+            </Menu>
         </MenuBar>
     </top>
     <left>
@@ -38,29 +39,29 @@
                 style="-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-spacing: 10;">
 
 
-                <Button text="Circle"
-                        style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
-                        minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
-                <Button text="Rectangle"
-                        style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
-                        minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
-                <Button text="Line"
-                        style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
-                        minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
-                <Button text="Text"
-                        style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
-                        minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
-                <Button text="Ellipse"
-                        style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
-                        minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Circle"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Rectangle"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Line"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Text"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
+            <Button text="Ellipse"
+                    style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
+                    minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
 
 
         </MyVBox>
 
 
     </left>
-    <center >
-        <ScrollPane prefWidth="Infinity" prefHeight="Infinity" >
+    <center>
+        <ScrollPane prefWidth="Infinity" prefHeight="Infinity">
             <MyCanvas fx:id="canvas"
                       onMouseClicked="#canvasMouseClicked"
                       onMouseDragEntered="#canvasMouseDragEnter"
@@ -73,11 +74,12 @@
                       onMouseMoved="#canvasMouseMoved"
                       onMousePressed="#canvasMousePressed"
                       onMouseReleased="#cavasMouseReleased"
-                      width="2800" height="1200" />
+                      width="2800" height="1200"/>
         </ScrollPane>
     </center>
     <right>
-        <MyVBox fx:id="paraSetInter" prefHeight="200" prefWidth="120" minHeight="Infinity" minWidth="90" alignment="TOP_CENTER" >
+        <MyVBox fx:id="paraSetInter" prefHeight="200" prefWidth="120" minHeight="Infinity" minWidth="90"
+                alignment="TOP_CENTER">
 
         </MyVBox>
     </right>
