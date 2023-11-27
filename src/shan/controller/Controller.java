@@ -1,6 +1,7 @@
 package shan.controller;
 
 import Graph.*;
+import IOHandle.Save;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,8 +23,10 @@ import shan.interfaces.MyTextArea;
 import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +71,7 @@ public class Controller {
     }
 
     private List<BaseGraph> graphList;
+
 
     private Color fillColor;
     private Color borderColor;
@@ -506,31 +510,34 @@ public class Controller {
             }
         }
     }
-    @FXML
-    private void handleNew(ActionEvent event) {
-        // 处理“New”菜单项的逻辑
-        System.out.println("New MenuItem clicked");
-    }
-
-    @FXML
-    private void handleOpen(ActionEvent event) {
-        // 处理“Open”菜单项的逻辑
-        System.out.println("Open MenuItem clicked");
-    }
 
     @FXML
     private void handleSave(ActionEvent event) {
-        // 处理“Save”菜单项的逻辑
-        System.out.println("Save MenuItem clicked");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Graph Parameters");
+
+        // 设置文件选择器的默认扩展名和过滤器
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // 显示保存对话框并获取用户选择的文件
+        File file = fileChooser.showSaveDialog(new Stage());
+
+        // 如果用户选择了文件，则保存参数
+        if (file != null) {
+            Save save = new Save();
+
+            // 假设 graphList 是你保存所有图形的列表
+            for (BaseGraph graph : graphList) {
+                save.addGraph(graph);
+            }
+
+            // 调用 saveAll 方法将信息保存到文件
+            save.saveAll(file.getAbsolutePath());
+
+            // 可以在这里添加保存成功的提示或其他处理
+            System.out.println("Save button clicked!"); // 确保这里有终端输出
+        }
     }
-    @FXML
-    private void handleRedo(ActionEvent event) {
-        // 处理“Redo”菜单项的逻辑
-        System.out.println("Redo MenuItem clicked");
-    }
-    @FXML
-    private void handleUndo(ActionEvent event) {
-        // 处理“Undo”菜单项的逻辑
-        System.out.println("Undo MenuItem clicked");
-    }
+
 }

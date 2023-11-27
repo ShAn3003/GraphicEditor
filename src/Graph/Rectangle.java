@@ -19,8 +19,12 @@ public class Rectangle extends BaseGraph{
         this.coord1 = new Tuple<Double,Double>(x,y);
     }
 
-    public void save()
-    {
-        //
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: Rectangle\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+        info.append("Coord1: ").append(coord1.first()).append(", ").append(coord1.second()).append("\n");
+
+        return info.toString();
     }
 }

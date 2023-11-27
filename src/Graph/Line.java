@@ -15,8 +15,13 @@ public class Line extends BaseGraph {
         left=new Tuple<Double,Double>(min(x0,x1),min(y0,y1));
         right=new Tuple<Double,Double>(max(x0,x1),max(y0,y1));
     }
-    public void save()
-    {
-        //
+    @Override
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: Line\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+        info.append("Coord2: ").append(coord2.first()).append(", ").append(coord2.second()).append("\n");
+
+        return info.toString();
     }
 }

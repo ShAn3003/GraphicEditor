@@ -23,8 +23,14 @@ public class Point extends BaseGraph{
         Tuple<Double,Double> t=new Tuple<Double,Double>(x,y);
         points.add(t);
     }
-    public void save()
-    {
-        //
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: Point\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+
+        for (Tuple<Double, Double> point : points) {
+            info.append("Point: ").append(point.first()).append(", ").append(point.second()).append("\n");
+        }
+        return info.toString();
     }
 }
