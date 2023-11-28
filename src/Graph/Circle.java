@@ -26,11 +26,6 @@ public class Circle extends BaseGraph{
         super.SetBound(x-r,y-r,x+r,y+r);
     }
 
-    public void save()
-    {
-        //
-    }
-
     public Color getFillColor() {
         return fillColor;
     }

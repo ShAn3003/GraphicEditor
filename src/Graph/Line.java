@@ -21,10 +21,6 @@ public class Line extends BaseGraph {
     {
         super.SetBound(x0,y0,x1,y1);
     }
-    public void save()
-    {
-        //
-    }
 
     public Color getLineColor() {
         return lineColor;
@@ -48,5 +44,13 @@ public class Line extends BaseGraph {
 
     public void setCoord1(Tuple<Double, Double> coord1) {
         this.coord1 = coord1;
+    }
+    @Override
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: Line\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+        info.append("Coord2: ").append(coord1.first()).append(", ").append(coord1.second()).append("\n");
+        return info.toString();
     }
 }

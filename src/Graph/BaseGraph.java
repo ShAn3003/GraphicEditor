@@ -62,9 +62,9 @@ public abstract class BaseGraph {
 
     }
 
-    public void save()
+    public String save()
     {
-
+        return "";
     }
 
 

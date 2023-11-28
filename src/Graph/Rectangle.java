@@ -32,11 +32,6 @@ public class Rectangle extends BaseGraph{
         super.SetBound(x0,y0, x1, y1);
     }
 
-    public void save()
-    {
-        //
-    }
-
     public Color getFillColor() {
         return fillColor;
     }
@@ -60,4 +55,14 @@ public class Rectangle extends BaseGraph{
     public void setLineWidth(Double lineWidth) {
         this.lineWidth = lineWidth;
     }
+    @Override
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: Rectangle\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+        info.append("Coord1: ").append(coord1.first()).append(", ").append(coord1.second()).append("\n");
+
+        return info.toString();
+    }
+
 }
