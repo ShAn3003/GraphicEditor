@@ -28,7 +28,10 @@
             <Menu mnemonicParsing="false" text="Edit">
                 <MenuItem mnemonicParsing="false" onAction="#handleRedo" text="Redo"/>
                 <MenuItem mnemonicParsing="false" onAction="#handleUndo" text="Undo"/>
-
+            </Menu>
+            <Menu mnemonicParsing="false" text="Additional">
+                <MenuItem mnemonicParsing="false" onAction="#handleHelp" text="Help"/>
+                <MenuItem mnemonicParsing="false" onAction="#SetCanvasColor" text="CanvasColor"/>
             </Menu>
         </MenuBar>
     </top>

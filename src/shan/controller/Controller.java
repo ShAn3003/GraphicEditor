@@ -49,6 +49,7 @@ public class Controller {
         textSize = 12.0;
         selectedFontStyle = "华文仿宋";
         textFiled = "";
+        canvasColor=Color.WHITE;
 
     }
 
@@ -556,5 +557,32 @@ public class Controller {
 
     @FXML
     private void handleUndo(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleHelp(ActionEvent event) {
+    }
+
+    private Color canvasColor;
+    public void setCanvasPara(){
+        paraSetInter.getChildren().clear();
+
+        Label fillColorLabel = new Label("BackGround-Color");
+        ColorPicker fillColorPicker = new ColorPicker(canvasColor);
+        fillColorPicker.setOnAction(fillColorEvent -> {
+            this.canvasColor = fillColorPicker.getValue();
+            System.out.println("Selected Fill Color for Canvas: " + this.canvasColor.toString());
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc.setFill(this.canvasColor);
+            double canvasWidth = canvas.getWidth();
+            double canvasHeight = canvas.getHeight();
+            gc.fillRect(0, 0, canvasWidth, canvasHeight);
+        });
+
+        paraSetInter.getChildren().addAll(fillColorLabel,fillColorPicker);
+    }
+    @FXML
+    private void SetCanvasColor(ActionEvent event) {
+        setCanvasPara();
     }
 }
