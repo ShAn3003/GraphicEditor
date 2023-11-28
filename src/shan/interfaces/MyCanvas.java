@@ -16,7 +16,7 @@ public class MyCanvas extends Canvas {
     public MyCanvas()
     {
         super();
-        currentMode=MyCanvasMode.CIRCLE;
+        currentMode=MyCanvasMode.SELECT;
     }
 
     public MyCanvasMode getCurrentMode()
