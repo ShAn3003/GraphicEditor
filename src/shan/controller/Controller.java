@@ -120,6 +120,7 @@ public class Controller {
 
 
     }
+
     private void setLinePara() {
         paraSetInter.getChildren().clear();
 
@@ -147,6 +148,7 @@ public class Controller {
 
         paraSetInter.getChildren().addAll(lineColorLabel, lineColorPicker, lineWidthLabel, lineWidthComboBox);
     }
+
     private void setCirclePara() {
         setShapeParameters("Circle", Color.WHITE, Color.BLACK, 1.0);
     }
@@ -159,8 +161,6 @@ public class Controller {
     private void setEllipsePara() {
         setShapeParameters("Ellipse", Color.WHITE, Color.BLACK, 1.0);
     }
-
-
 
 
     private void setTextBoxPara() {
@@ -201,15 +201,16 @@ public class Controller {
         // 添加ChangeListener来监听TextArea的文本变化
         textArea.textProperty().addListener((observable, oldValue, newValue) -> {
             System.out.println("Text in TextArea changed: " + newValue);
-            textFiled= newValue;
+            textFiled = newValue;
             // 在这里处理文本变化后的逻辑
         });
         // 添加其他文本框特有的参数设置组件，如果有的话
 
         paraSetInter.getChildren().addAll(textColorLabel, textColorPicker,
-                textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox,textFiledLabel,textArea);
+                textSizeLabel, textSizeComboBox, fontStyleLabel, fontStyleComboBox, textFiledLabel, textArea);
     }
-    private void setDrawPara(){
+
+    private void setDrawPara() {
         paraSetInter.getChildren().clear();
 
         Label fillColorLabel = new Label("Fill-Color");
@@ -230,8 +231,9 @@ public class Controller {
             System.out.println("Selected Line Width: " + lineWidth);
             // 更新线条宽度--Func
         });
-        paraSetInter.getChildren().addAll(fillColorLabel,fillColorPicker,lineWidthLabel,lineWidthComboBox);
+        paraSetInter.getChildren().addAll(fillColorLabel, fillColorPicker, lineWidthLabel, lineWidthComboBox);
     }
+
     private void resetButtonStyles() {
         // Reset style for all buttons in the VBox
         for (Node node : figureBox.getChildren()) {
@@ -540,4 +542,19 @@ public class Controller {
         }
     }
 
+    @FXML
+    private void handleNew(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleOpen(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleRedo(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleUndo(ActionEvent event) {
+    }
 }
