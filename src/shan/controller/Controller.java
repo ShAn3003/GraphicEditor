@@ -7,6 +7,7 @@ import IOHandle.Save;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -20,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import shan.interfaces.MyCanvas;
-import shan.interfaces.MyTextArea;
 import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
@@ -30,6 +30,8 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class Controller {
     private void initialize() {
         System.out.println("Initialize Called!");
 //        各种参数变量初始化
+//        canvas.setStyle("-fx-border-color: black; -fx-border-width: 12px;");
         fillColor = Color.TRANSPARENT;
         borderColor = Color.BLACK;
         lineColor = Color.BLACK;
@@ -102,7 +105,7 @@ public class Controller {
         ColorPicker fillColorPicker = new ColorPicker(fillColor);
         fillColorPicker.setOnAction(fillColorEvent -> {
             this.fillColor = fillColorPicker.getValue();
-            message="Selected Fill Color for " + shapeType + ": " + this.fillColor.toString();
+            message = "Selected Fill Color for " + shapeType + ": " + this.fillColor.toString();
             System.out.println(message);
             //更新备注区域
             remarkArea.setText(message);
@@ -112,7 +115,7 @@ public class Controller {
         ColorPicker borderColorPicker = new ColorPicker(borderColor);
         borderColorPicker.setOnAction(borderColorEvent -> {
             this.borderColor = borderColorPicker.getValue();
-            message="Selected Border Color for " + shapeType + ": " + this.borderColor.toString();
+            message = "Selected Border Color for " + shapeType + ": " + this.borderColor.toString();
             System.out.println(message);
             //更新备注区域
             remarkArea.setText(message);
@@ -256,7 +259,7 @@ public class Controller {
         lineWidthComboBox.setValue(lineWidth);
         lineWidthComboBox.setOnAction(lineWidthEvent -> {
             lineWidth = lineWidthComboBox.getSelectionModel().getSelectedItem();
-            message="Selected Line Width: " + lineWidth;
+            message = "Selected Line Width: " + lineWidth;
             System.out.println(message);
             remarkArea.setText(message);
             // 更新线条宽度--Func
@@ -312,7 +315,7 @@ public class Controller {
                 setDrawPara();
             } else if ("Select".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.SELECT);
-//                setEllipsePara();
+                setSelectPara();
             }
         }
     }
@@ -495,20 +498,94 @@ public class Controller {
         }
     }
 
-    private void test() {
-    }
-
-
-    @FXML
-    public void canvasMouseDragEnter(MouseDragEvent event)
-    //当鼠标拖拽进入 Canvas 区域时触发
+    private void setSelectPara()
     {
+        paraSetInter.getChildren().clear();
+
+        Label fillColorLabel = new Label("对齐选项");
+        Button leftAligned = new Button("左对齐");
+        leftAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button centerAligned = new Button("居中对齐");
+        centerAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button rightAligned = new Button("右对齐");
+        rightAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button topAligned = new Button("顶端对齐");
+        topAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button bottomAligned = new Button("底端对齐");
+        bottomAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button verCenAligned = new Button("垂直居中对齐");
+        verCenAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button copyButton = new Button("Copy");
+        copyButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button delButton = new Button("delete");
+        delButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        // 添加其他共有的参数设置组件，如果有的话
+
+        paraSetInter.getChildren().addAll(fillColorLabel, leftAligned,rightAligned,topAligned,centerAligned,bottomAligned,verCenAligned,copyButton,delButton);
+
+
+
     }
+    //
+    @FXML
+    public void canvasMouseDragEnter(MouseDragEvent event) {
+
+    }
+
 
     @FXML
     public void canvasMouseDragExit(MouseDragEvent event)
     //当鼠标拖拽退出 Canvas 区域时触发。
     {
+        System.out.println("触发拖拽退出画布");
     }
 
     @FXML
@@ -690,15 +767,12 @@ public class Controller {
         // 如果用户选择了文件，则保存参数
         if (file != null) {
             Save save = new Save();
-
             // 假设 graphList 是你保存所有图形的列表
             for (BaseGraph graph : graphList) {
                 save.addGraph(graph);
             }
-
             // 调用 saveAll 方法将信息保存到文件
             save.saveAll(file.getAbsolutePath());
-
             // 可以在这里添加保存成功的提示或其他处理
             System.out.println("Save button clicked!"); // 确保这里有终端输出
         }
@@ -728,23 +802,25 @@ public class Controller {
 
     @FXML
     private void handleHelp(ActionEvent event) {
-        // 在这里添加处理帮助按钮点击事件的逻辑
-
-        // 例如，打开一个帮助文档
         openHelpDocument();
     }
 
     private void openHelpDocument() {
-        String helpDocumentPath = "path/to/your/help/document.pdf";  // 替换为你的帮助文档的路径
-
+        String helpDocumentPath = "src" + File.separator + "shan" + File.separator + "help" + File.separator + "GraphicEditor-ShAn.pdf";
         // 尝试使用默认的系统关联应用程序打开文档
         try {
-            Desktop.getDesktop().open(new File(helpDocumentPath));
+            if (Files.exists(Paths.get(helpDocumentPath))) {
+                Desktop.getDesktop().open(new File(helpDocumentPath));
+            } else {
+                System.out.println("File does not exist: " + helpDocumentPath);
+            }
         } catch (IOException e) {
-            // 处理异常，例如文档无法打开的情况
             e.printStackTrace();
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Desktop operations not supported on this platform");
         }
     }
+
 
     private Color canvasColor;
 

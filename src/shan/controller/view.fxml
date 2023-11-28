@@ -12,42 +12,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import shan.interfaces.MyCanvas?>
 <?import shan.interfaces.MyVBox?>
-<?import shan.interfaces.MyTextArea?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="600.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="shan.controller.Controller">
     <top>
-<!--        <MenuBar>-->
-<!--            <Menu mnemonicParsing="false" text="File">-->
-<!--                <MenuItem mnemonicParsing="false" onAction="#handleNew" text="New"/>-->
-<!--                <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open"/>-->
-<!--                <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save"/>-->
-<!--            </Menu>-->
-<!--            <Menu mnemonicParsing="false" text="Edit">-->
-<!--                <MenuItem mnemonicParsing="false" onAction="#handleRedo" text="Redo"/>-->
-<!--                <MenuItem mnemonicParsing="false" onAction="#handleUndo" text="Undo"/>-->
-<!--            </Menu>-->
-<!--            <Menu mnemonicParsing="false" text="Additional">-->
-<!--                <MenuItem mnemonicParsing="false" disable="true" onAction="#handleHelp" text="Help"/>-->
-<!--                <MenuItem mnemonicParsing="false" disable="true" onAction="#SetCanvasColor" text="CanvasColor"/>-->
-<!--            </Menu>-->
-<!--        </MenuBar>-->
         <MenuBar>
-            <Menu mnemonicParsing="true" text="_File">
-                <MenuItem mnemonicParsing="true" onAction="#handleNew" text="_New"/>
-                <MenuItem mnemonicParsing="true" onAction="#handleOpen" text="_Open"/>
-                <MenuItem mnemonicParsing="true" onAction="#handleSave" text="_Save"/>
+            <Menu text="_File">
+                <MenuItem onAction="#handleNew" text="_New"/>
+                <MenuItem onAction="#handleOpen" text="_Open"/>
+                <MenuItem onAction="#handleSave" text="_Save"/>
             </Menu>
-            <Menu mnemonicParsing="true" text="_Edit">
-                <MenuItem mnemonicParsing="true" onAction="#handleRedo" text="_Redo"/>
-                <MenuItem mnemonicParsing="true" onAction="#handleUndo" text="_Undo"/>
+            <Menu  text="_Edit">
+                <MenuItem  onAction="#handleRedo" text="_Redo"/>
+                <MenuItem  onAction="#handleUndo" text="_Undo"/>
             </Menu>
-            <Menu mnemonicParsing="true" text="_Additional">
-                <MenuItem mnemonicParsing="true" disable="true" onAction="#handleHelp" text="_Help"/>
-                <MenuItem mnemonicParsing="true" disable="true" onAction="#SetCanvasColor" text="_CanvasColor"/>
+            <Menu  text="_Additional">
+                <MenuItem  disable="false" onAction="#handleHelp" text="_Help"/>
+                <MenuItem disable="true" onAction="#SetCanvasColor" text="_CanvasColor"/>
             </Menu>
         </MenuBar>
 
@@ -56,7 +42,6 @@
     <left>
         <MyVBox fx:id="figureBox" prefHeight="800" prefWidth="120" alignment="TOP_CENTER"
                 style="-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-spacing: 10;">
-
 
             <Button text="Circle"
                     style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
@@ -79,29 +64,30 @@
             <Button text="Select"
                     style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-border-color: #2196F3; -fx-border-width: 3px; -fx-border-radius: 5px;"
                     minWidth="90" minHeight="40" onAction="#pressOnFigure"/>
-
-
         </MyVBox>
 
 
     </left>
     <center>
-        <ScrollPane prefWidth="Infinity" prefHeight="Infinity">
-            <MyCanvas fx:id="canvas"
-                      onMouseClicked="#canvasMouseClicked"
-                      onMouseDragEntered="#canvasMouseDragEnter"
-                      onMouseDragExited="#canvasMouseDragExit"
-                      onMouseDragged="#canvasMouseDragged"
-                      onMouseDragOver="#canvasMouseDragOver"
-                      onMouseDragReleased="#canvasMouseDragReleased"
-                      onMouseEntered="#canvasMouseEntered"
-                      onMouseExited="#canvasMouseExited"
-                      onMouseMoved="#canvasMouseMoved"
-                      onMousePressed="#canvasMousePressed"
-                      onMouseReleased="#cavasMouseReleased"
-                      width="2800" height="1200"
-                      />
+        <ScrollPane >
+                    <MyCanvas fx:id="canvas"
+                              onMouseClicked="#canvasMouseClicked"
+                              onMouseDragEntered="#canvasMouseDragEnter"
+                              onMouseDragExited="#canvasMouseDragExit"
+                              onMouseDragged="#canvasMouseDragged"
+                              onMouseDragOver="#canvasMouseDragOver"
+                              onMouseDragReleased="#canvasMouseDragReleased"
+                              onMouseEntered="#canvasMouseEntered"
+                              onMouseExited="#canvasMouseExited"
+                              onMouseMoved="#canvasMouseMoved"
+                              onMousePressed="#canvasMousePressed"
+                              onMouseReleased="#cavasMouseReleased"
+                              width="600" height="400"
+                              style="-fx-border-color: black; -fx-border-width: 1px;"/>
+
         </ScrollPane>
+
+
     </center>
     <right>
         <MyVBox fx:id="paraSetInter" prefHeight="200" prefWidth="120" minHeight="Infinity" minWidth="90"
@@ -113,7 +99,6 @@
         <VBox alignment="TOP_CENTER"  prefHeight="200" prefWidth="-Infinity"  spacing="20">
             <Label text=" "/>
             <Label fx:id="remarkArea" textAlignment="CENTER" text="HERE">
-                <!-- 设置其他属性，如字体等 -->
             </Label>
         </VBox>
 
