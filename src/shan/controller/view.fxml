@@ -14,20 +14,24 @@
 <?import shan.interfaces.MyVBox?>
 <?import shan.interfaces.MyTextArea?>
 <?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.control.Label?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="shan.controller.Controller">
     <top>
         <MenuBar>
-            <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" onAction="#handleNew" text="New"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save"/>
+            <Menu mnemonicParsing="true" text="_File">
+                <MenuItem mnemonicParsing="true" onAction="#handleNew" text="_New"/>
+                <MenuItem mnemonicParsing="true" onAction="#handleOpen" text="_Open"/>
+                <MenuItem mnemonicParsing="true" onAction="#handleSave" text="_Save"/>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-                <MenuItem mnemonicParsing="false" onAction="#handleRedo" text="Redo"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleUndo" text="Undo"/>
-
+            <Menu mnemonicParsing="true" text="_Edit">
+                <MenuItem mnemonicParsing="true" onAction="#handleRedo" text="_Redo"/>
+                <MenuItem mnemonicParsing="true" onAction="#handleUndo" text="_Undo"/>
+            </Menu>
+            <Menu mnemonicParsing="true" text="_Additional">
+                <MenuItem mnemonicParsing="true" disable="true" onAction="#handleHelp" text="_Help"/>
+                <MenuItem mnemonicParsing="true" disable="true" onAction="#SetCanvasColor" text="_CanvasColor"/>
             </Menu>
         </MenuBar>
     </top>
@@ -87,8 +91,12 @@
         </MyVBox>
     </right>
     <bottom>
-        <MyTextArea fx:id="remarkArea" prefHeight="200" prefWidth="Infinity">
+        <VBox alignment="TOP_CENTER"  prefHeight="200" prefWidth="-Infinity"  spacing="20">
+            <Label text=" "/>
+            <Label fx:id="remarkArea" textAlignment="CENTER" text="HERE">
+                <!-- 设置其他属性，如字体等 -->
+            </Label>
+        </VBox>
 
-        </MyTextArea>
     </bottom>
 </BorderPane>

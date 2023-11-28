@@ -66,4 +66,18 @@ public class Point extends BaseGraph{
         }
         return info.toString();
     }
+
+    @Override
+    public void move(Double dx, Double dy) {
+        Tuple<Double,Double> coord=this.getCoord0();
+        this.setCoord0(coord.first()+dx,coord.second()+dy);
+        for(Tuple<Double,Double> p :points)
+        {
+            p=new Tuple<Double,Double>(p.first()+dx,p.second()+dy);
+        }
+        super.SetBound(this.getLeft().first()+dx,
+                this.getLeft().second()+dy,
+                this.getRight().first()+dx,
+                this.getRight().second()+dy);
+    }
 }

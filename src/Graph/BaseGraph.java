@@ -66,6 +66,7 @@ public abstract class BaseGraph {
     {
         return "";
     }
-
-
+    public abstract void move(Double dx,Double dy);
 }
+
+

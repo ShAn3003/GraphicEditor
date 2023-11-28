@@ -53,4 +53,14 @@ public class Circle extends BaseGraph{
     public double getRadius() {
         return radius;
     }
+
+    @Override
+    public void move(Double dx, Double dy) {
+        Tuple<Double,Double> coord=this.getCoord0();
+        this.setCoord0(coord.first()+dx,coord.second()+dy);
+        super.SetBound(this.getLeft().first()+dx,
+                this.getLeft().second()+dy,
+                this.getRight().first()+dx,
+                this.getRight().second()+dy);
+    }
 }

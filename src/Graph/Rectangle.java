@@ -2,8 +2,6 @@ package Graph;
 
 import javafx.scene.paint.Color;
 
-import java.util.Set;
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -63,6 +61,17 @@ public class Rectangle extends BaseGraph{
         info.append("Coord1: ").append(coord1.first()).append(", ").append(coord1.second()).append("\n");
 
         return info.toString();
+    }
+
+    @Override
+    public void move(Double dx, Double dy) {
+        Tuple<Double,Double> coord=this.getCoord0();
+        this.setCoord0(coord.first()+dx,coord.second()+dy);
+        coord1=new Tuple<Double,Double>(coord1.first()+dx,coord1.second()+dy);
+        super.SetBound(this.getLeft().first()+dx,
+                this.getLeft().second()+dy,
+                this.getRight().first()+dx,
+                this.getRight().second()+dy);
     }
 
 }
