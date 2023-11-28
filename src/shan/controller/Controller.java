@@ -349,18 +349,17 @@ public class Controller {
         gc.setFont(font);
         // 绘制文本框
         gc.fillText(textFiled, x,y);
-
     }
     private void reDraw(List<BaseGraph> list)
     {
-        Color fillcolor0=fillColor;
+        Color fillColor0=fillColor;
         Color borderColor0=borderColor;
         Color lineColor0=lineColor;
         Double lineWidth0=lineWidth;
         Double textSize0=textSize;
         Color textColor0=textColor;
         String selectedFontStyle0=selectedFontStyle;
-
+        String textFiled0=textFiled;
         for(BaseGraph g:list)
         {
             if(g.getType()== BaseGraph.GRAPHTYPE.CIRCLE)
@@ -409,26 +408,30 @@ public class Controller {
                 lineWidth=graph.getLineWidth();
                 drawRectangle(graph.getLeft().first(),
                         graph.getLeft().second(),
-                        graph.getRight().second()-graph.getLeft().first(),
-                        graph.getRight().second()-graph.getRight().second());
+                        graph.getRight().first()-graph.getLeft().first(),
+                        graph.getRight().second()-graph.getLeft().second());
+
             }else if (g.getType()== BaseGraph.GRAPHTYPE.TEXTBOX)
             {
                 TextBox graph=(TextBox) g;
                 textSize =graph.getTextSize();
                 textColor =graph.getTextColor();
                 selectedFontStyle =graph.getSelectedFontStyle();
+                textFiled=graph.getText();
+
                 drawText(graph.getCoord0().first(),graph.getCoord0().second());
             }
         }
-        fillColor=fillcolor0;
+        fillColor=fillColor0;
         borderColor=borderColor0;
         lineColor=lineColor0;
         lineWidth=lineWidth0;
         textSize=textSize0;
         textColor=textColor0;
         selectedFontStyle=selectedFontStyle0;
+        textFiled=textFiled0;
     }
-    private void clear(Double x,Double y,Double width,Double height)
+    private void clear(Double x, Double y,Double width,Double height)
     {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(x,y,width,height);
@@ -456,8 +459,6 @@ public class Controller {
         if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
             double mouseX = event.getX();
             double mouseY = event.getY();
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
-
         }
     }
 
@@ -486,6 +487,7 @@ public class Controller {
             double mouseY = event.getY();
             Point p = (Point) graphList.remove(graphList.size() - 1);
             p.add(mouseX, mouseY);
+            p.SetBound(mouseX,mouseY);
             // 执行绘制的动作，传递鼠标位置
             drawPencil(mouseX, mouseY);
             graphList.add(p);
@@ -543,6 +545,7 @@ public class Controller {
             graphList.add(e);
         } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.POINT) {
             Point p = new Point(mouseX, mouseY,lineColor,lineWidth);
+            p.SetBound(mouseX,mouseY,mouseX,mouseY);
             //
             graphList.add(p);
         }else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT) {
@@ -614,6 +617,10 @@ public class Controller {
             try {
                 Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
                 TextBox t=new TextBox(coord1.first(),coord1.second(),mouseX,mouseY);
+                t.setText(textFiled);
+                t.setTextSize(textSize);
+                t.setTextColor(textColor);
+                t.setSelectedFontStyle(selectedFontStyle);
                 graphList.add(t);
                 drawText(coord1.first(),coord1.second());
             } catch (NullPointerException e) {
@@ -625,9 +632,12 @@ public class Controller {
                 selectbox.SetBound(selectbox.getCoord0().first(),selectbox.getCoord0().second(),mouseX,mouseY);
                 List<BaseGraph> select=SelectGraph(selectbox);
                 clear(0.0,0.0,canvas.getWidth(),canvas.getHeight());
-                reDraw(select);
+                if(select.isEmpty())
+                    System.out.println("未选中任何图形");
+                else
+                    reDraw(select);
             } catch (NullPointerException e) {
-                System.out.println("错误");
+                System.out.println(e);
             }
         }
     }

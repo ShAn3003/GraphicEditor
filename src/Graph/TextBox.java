@@ -47,4 +47,9 @@ public class TextBox extends BaseGraph{
     public String getSelectedFontStyle() {
         return selectedFontStyle;
     }
+
+
+    public String getText() {
+        return text;
+    }
 }

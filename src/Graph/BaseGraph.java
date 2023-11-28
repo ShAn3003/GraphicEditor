@@ -4,7 +4,7 @@ package Graph;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class BaseGraph {
+public abstract class BaseGraph {
     public GRAPHTYPE getType() {
         return type;
     }
@@ -55,6 +55,11 @@ public class BaseGraph {
 
     public Tuple<Double, Double> getRight() {
         return right;
+    }
+
+    public void SetBound(double x, double y)//draw
+    {
+
     }
 
     public void save()

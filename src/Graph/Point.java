@@ -36,7 +36,7 @@ public class Point extends BaseGraph{
     }
 
     @Override
-    public void SetBound(double x, double y, double x1, double y1) {
+    public void SetBound(double x, double y) {
         super.SetBound(min(x,getLeft().first()), min(y,getLeft().second()), max(x,getRight().first()),max(y,getRight().second()));
     }
 
