@@ -43,18 +43,19 @@ public class Point extends BaseGraph{
             info.append("Point: ").append(point.first()).append(", ").append(point.second()).append("\n");
         }
         return info.toString();
+    }
 
     @Override
     public void SetBound(double x, double y) {
         super.SetBound(min(x,getLeft().first()), min(y,getLeft().second()), max(x,getRight().first()),max(y,getRight().second()));
     }
 
-    public void save()
-    {
-        //
-    }
+//    public void save()
+//    {
+//        //
+//    }
 
-    public Color getFillcolor() {
+    public Color getFillcolor(){
         return fillcolor;
     }
 

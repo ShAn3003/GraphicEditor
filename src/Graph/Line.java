@@ -26,7 +26,7 @@ public class Line extends BaseGraph {
         StringBuilder info = new StringBuilder();
         info.append("Type: Line\n");
         info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
-        info.append("Coord2: ").append(coord2.first()).append(", ").append(coord2.second()).append("\n");
+        info.append("Coord2: ").append(getCoord1().first()).append(", ").append(getCoord1().second()).append("\n");
 
         return info.toString();
     }

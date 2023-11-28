@@ -2,8 +2,6 @@ package Graph;
 
 import javafx.scene.paint.Color;
 
-import java.util.Set;
-
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -32,8 +30,7 @@ public class Rectangle extends BaseGraph{
         super.SetBound(x0,y0, x1, y1);
     }
 
-    public void save()
-    {
+
         //
     public String save() {
         StringBuilder info = new StringBuilder();
