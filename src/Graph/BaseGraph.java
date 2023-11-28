@@ -1,35 +1,55 @@
 package Graph;
 
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class BaseGraph {
-    private Tuple<Double,Double> coord0;
+public abstract class BaseGraph {
+    public GRAPHTYPE getType() {
+        return type;
+    }
+
+    public void setType(GRAPHTYPE type) {
+        this.type = type;
+    }
+
+    public enum GRAPHTYPE {
+        CIRCLE,
+        RECTANGLE,
+        TEXTBOX,
+        LINE,
+        ELLIPSE,
+        POINT
+    }
+
+    private Tuple<Double, Double> coord0;
     //定位点，
     //边界框左上角，
-    public Tuple<Double,Double> left;
+    private Tuple<Double, Double> left;
     //边界框右下角，
-    public Tuple<Double,Double> right;
+    private Tuple<Double, Double> right;
+    private GRAPHTYPE type;
 
-    public BaseGraph(double a,double b) {
+    public BaseGraph(double a, double b) {
 
     }
+
     public BaseGraph() {
 
     }
+
     // Getter和Setter方法
-    void setCoord0(double a,double b)
-    {
-        coord0=new Tuple<Double,Double>(a,b);
+    void setCoord0(double a, double b) {
+        coord0 = new Tuple<Double, Double>(a, b);
     }
-    public Tuple<Double,Double> getCoord0()
-    {
+
+    public Tuple<Double, Double> getCoord0() {
         return this.coord0;
     }
-    public void SetBound(double x0,double y0,double x1,double y1)
-    {
-        left=new Tuple<Double,Double>(min(2*x0-x1,x1),min(2*y0-y1,y1));
-        right=new Tuple<Double,Double>(max(2*x0-x1,x1),max(2*y0-y1,y1));
+
+    public void SetBound(double x0, double y0, double x1, double y1) {
+        left = new Tuple<Double, Double>(x0, y0);
+        right = new Tuple<Double, Double>(x1, y1);
     }
 
     public Tuple<Double, Double> getLeft() {
@@ -40,8 +60,14 @@ public class BaseGraph {
         return right;
     }
 
-    public String save()
+    public void SetBound(double x, double y)//draw
     {
+
+    }
+
+    public String save() {
         return "";
     }
 }
+
+
