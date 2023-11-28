@@ -20,7 +20,20 @@ public class Ellipse extends BaseGraph {
         SetBound(x0,y0,x1,y1);
         setType(GRAPHTYPE.ELLIPSE);
     }
-
+    public Ellipse(Ellipse e)
+    {
+        setCoord0(e.getCoord0().first(),e.getCoord0().second());
+        coord1=new Tuple<Double,Double>(e.getCoord1().first(),e.getCoord1().second());
+        coord2=new Tuple<Double,Double>(e.getCoord2().first(),e.getCoord2().second());
+        this.fillColor=e.fillColor;
+        this.borderColor=e.borderColor;
+        this.lineWidth=e.lineWidth;
+        SetBound(e.getCoord0().first(),
+                e.getCoord0().second(),
+                e.getCoord0().first()-e.getLeft().first(),
+                e.getCoord0().second()-e.getLeft().second());
+        setType(GRAPHTYPE.ELLIPSE);
+    }
     public Color getFillColor() {
         return fillColor;
     }
@@ -28,6 +41,22 @@ public class Ellipse extends BaseGraph {
     public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
+
+    public Tuple<Double, Double> getCoord1() {
+        return coord1;
+    }
+
+    public Tuple<Double, Double> getCoord2() {
+        return coord2;
+    }
+
+    public void setCoord1(Double x,Double y) {
+        this.coord1 = new Tuple<Double,Double>(x,y);
+    }
+    public void setCoord2(Double x,Double y) {
+        this.coord2 = new Tuple<Double,Double>(x,y);
+    }
+
 
     public Color getBorderColor() {
         return borderColor;

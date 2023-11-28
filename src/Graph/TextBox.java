@@ -16,6 +16,22 @@ public class TextBox extends BaseGraph{
         setText("");
         setType(GRAPHTYPE.TEXTBOX);
     }
+    public TextBox(TextBox t)
+    {
+        setCoord0(t.getCoord0().first(),t.getCoord0().second());
+        coord1=new Tuple<Double,Double>(t.getCoord1().first(),t.getCoord1().second());
+        SetBound(t.getCoord0().first(),
+                t.getCoord0().second(),
+                t.getCoord1().first(),
+                t.getCoord1().second());
+        setText(t.getText());
+        setType(GRAPHTYPE.TEXTBOX);
+    }
+
+    public Tuple<Double, Double> getCoord1() {
+        return coord1;
+    }
+
     public void SetBound(double x0, double y0, double x1, double y1) {
         super.SetBound(x0,y0, x1, y1);
     }

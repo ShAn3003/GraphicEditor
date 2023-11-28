@@ -33,13 +33,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.abs;
+import static shan.interfaces.MyCanvas.MyCanvasMode.SELECT;
 
 public class Controller {
     //暂时放在这里
-    public enum selectMode{
+    public enum SELECTMODE{
         COPY,
         MOVE,
-        DELETE//?感觉不需要
+        SELECT
     }
     public Controller() {
         System.out.println("Controller Start!");
@@ -59,7 +60,8 @@ public class Controller {
         textFiled = "";
         canvasColor = Color.TRANSPARENT;
         remarkArea.setFont(Font.font("华文仿宋", 20));
-
+        canvas.setCurrentMode(MyCanvas.MyCanvasMode.SELECT);
+        selectMode=SELECTMODE.SELECT;
         // 设置粗体
         remarkArea.setFont(Font.font("华文仿宋", FontWeight.BOLD, 20));
 
@@ -79,7 +81,7 @@ public class Controller {
     @FXML
     private Label remarkArea;
 
-
+    private SELECTMODE selectMode;
     private String message;
 
     public MyCanvas.MyCanvasMode getCanvasMode() {
@@ -87,7 +89,7 @@ public class Controller {
     }
 
     private List<BaseGraph> graphList;
-
+    private List<BaseGraph> selectGraph;
 
     private Color fillColor;
     private Color borderColor;
@@ -98,8 +100,9 @@ public class Controller {
     private Color textColor;
     private String selectedFontStyle;
     private String textFiled;
-    private Rectangle selectbox;
+    private Rectangle selectBox;
 
+    private Tuple<Double,Double> anchorPoint;//目前只用于移动复制时判断相对位移
     private void setShapeParameters(String shapeType, Color fillColor, Color borderColor, double lineWidth) {
         paraSetInter.getChildren().clear();
 
@@ -288,6 +291,7 @@ public class Controller {
         textSize = 12.0;
         selectedFontStyle = "华文仿宋";
         textFiled = "";
+        selectBox=null;
         if (event.getSource() instanceof Button clickedButton) {
 
             resetButtonStyles();
@@ -316,7 +320,8 @@ public class Controller {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.POINT);
                 setDrawPara();
             } else if ("Select".equals(clickedButton.getText())) {
-                canvas.setCurrentMode(MyCanvas.MyCanvasMode.SELECT);
+                canvas.setCurrentMode(SELECT);
+                selectMode=SELECTMODE.SELECT;
 //                setEllipsePara();
             }
         }
@@ -470,19 +475,52 @@ public class Controller {
         selectedFontStyle = selectedFontStyle0;
         textFiled = textFiled0;
     }
-
+    private void delete()
+    {
+        for(BaseGraph g:selectGraph)
+        {
+            graphList.remove(g);
+        }
+    }
+    private void copy()
+    {
+        for (BaseGraph g : selectGraph) {
+            if (g.getType() == BaseGraph.GRAPHTYPE.CIRCLE) {
+                Circle graph = (Circle) g;
+                graphList.add(new Circle(graph));
+            } else if (g.getType() == BaseGraph.GRAPHTYPE.ELLIPSE) {
+                Ellipse graph = (Ellipse) g;
+                graphList.add(new Ellipse(graph));
+            } else if (g.getType() == BaseGraph.GRAPHTYPE.LINE) {
+                Line graph = (Line) g;
+                graphList.add(new Line(graph));
+            } else if (g.getType() == BaseGraph.GRAPHTYPE.POINT) {
+                Point graph = (Point) g;
+                graphList.add(new Point(graph));
+            } else if (g.getType() == BaseGraph.GRAPHTYPE.RECTANGLE) {
+                Rectangle graph = (Rectangle) g;
+                graphList.add(new Rectangle(graph));
+            } else if (g.getType() == BaseGraph.GRAPHTYPE.TEXTBOX) {
+                TextBox graph = (TextBox) g;
+                graphList.add(new TextBox(graph));
+            }
+        }
+    }
     private void clear(Double x, Double y, Double width, Double height) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(x, y, width, height);
     }
-
-    private List<BaseGraph> SelectGraph(Rectangle selectbox) {
+    private void clear() {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvas.getWidth(),canvas.getHeight());
+    }
+    private List<BaseGraph> SelectGraph(Rectangle selectBox) {
         List<BaseGraph> select = new ArrayList<>();
         for (BaseGraph g : graphList) {
-            if (g.getLeft().first() >= selectbox.getLeft().first() &&
-                    g.getLeft().second() >= selectbox.getLeft().second() &&
-                    g.getRight().first() <= selectbox.getRight().first() &&
-                    g.getRight().second() <= selectbox.getRight().second()) {
+            if (g.getLeft().first() >= selectBox.getLeft().first() &&
+                    g.getLeft().second() >= selectBox.getLeft().second() &&
+                    g.getRight().first() <= selectBox.getRight().first() &&
+                    g.getRight().second() <= selectBox.getRight().second()) {
                 //graphList.remove(g);
                 select.add(g);
             }
@@ -533,6 +571,7 @@ public class Controller {
                 double dis = Math.sqrt(Math.pow((mouseX - coord.first()), 2) + Math.pow((mouseY - coord.second()), 2));
                 //drawCircle(coord.first(), coord.second(), dis);
                 circle.setRadius(dis);
+                circle.SetBound(circle.getCoord0().first(),circle.getCoord0().second(),dis);
                 graphList.add(circle);
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -581,23 +620,36 @@ public class Controller {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT) {
+        } else if (canvas.getCurrentMode() == SELECT ) {
             try {
-                selectbox.setCoord1(mouseX, mouseY);
-                selectbox.SetBound(selectbox.getCoord0().first(), selectbox.getCoord0().second(), mouseX, mouseY);
-                List<BaseGraph> select = SelectGraph(selectbox);
-                clear(0.0, 0.0, canvas.getWidth(), canvas.getHeight());
-                if (select.isEmpty())
-                    System.out.println("未选中任何图形");
+                if(selectMode==SELECTMODE.SELECT)
+                {
+                    selectBox.setCoord1(mouseX,mouseY);
+                    selectBox.SetBound(selectBox.getCoord0().first(),selectBox.getCoord0().second(),mouseX,mouseY);
+                }
                 else
-                    reDraw(select);
+                {
+                    double dx=mouseX-anchorPoint.first();
+                    double dy=mouseY-anchorPoint.second();
+                    for(BaseGraph g:selectGraph)
+                    {
+                        g.move(dx,dy);
+                    }
+                }
+                anchorPoint=new Tuple<Double,Double>(mouseX,mouseY);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }
-        clear(0.0,0.0,canvas.getWidth(),canvas.getHeight());
+        clear();
         reDraw(graphList);
-
+        if(canvas.getCurrentMode() == SELECT && selectMode==SELECTMODE.SELECT)
+        {
+            List<BaseGraph> tmp=new ArrayList<>();
+            tmp.add(selectBox);
+            reDraw(tmp);
+        }
+        //reDraw(selectGraph);
     }
 
     @FXML
@@ -633,6 +685,9 @@ public class Controller {
         if (graphList == null) {
             graphList = new ArrayList<>();
         }
+        if (selectGraph == null) {
+            selectGraph = new ArrayList<>();
+        }
         if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
             Circle circle = new Circle(mouseX, mouseY, 0, fillColor, borderColor, lineWidth);
             //生成圆的实例
@@ -654,12 +709,16 @@ public class Controller {
             p.SetBound(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(p);
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT) {
-            selectbox = new Rectangle(mouseX, mouseY, mouseX, mouseY, Color.TRANSPARENT, Color.RED, lineWidth);
         } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
             TextBox t = new TextBox(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(t);
+        }else if (canvas.getCurrentMode() == SELECT) {
+            if(selectMode==SELECTMODE.SELECT) {
+                selectBox = new Rectangle(mouseX, mouseY, mouseX, mouseY, Color.TRANSPARENT, Color.RED, lineWidth);
+            }else {
+                anchorPoint=new Tuple<Double,Double>(mouseX,mouseY);
+            }
         }
 
     }
@@ -672,12 +731,12 @@ public class Controller {
     }
 
     @FXML
-    public void cavasMouseReleased(MouseEvent event)
+    public void canvasMouseReleased(MouseEvent event)
     //当鼠标在 Canvas 上释放时触发。
     {
-        /*
         double mouseX = event.getX();
         double mouseY = event.getY();
+        /*
         if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
             try {
                 Circle circle = (Circle) graphList.remove(graphList.size() - 1);
@@ -733,21 +792,28 @@ public class Controller {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT) {
+        } else
+        */
+        if (canvas.getCurrentMode() == SELECT) {
             try {
-                selectbox.setCoord1(mouseX, mouseY);
-                selectbox.SetBound(selectbox.getCoord0().first(), selectbox.getCoord0().second(), mouseX, mouseY);
-                List<BaseGraph> select = SelectGraph(selectbox);
-                clear(0.0, 0.0, canvas.getWidth(), canvas.getHeight());
-                if (select.isEmpty())
-                    System.out.println("未选中任何图形");
-                else
-                    reDraw(select);
+                if(selectMode==SELECTMODE.SELECT) {
+                    selectBox.setCoord1(mouseX, mouseY);
+                    selectBox.SetBound(selectBox.getCoord0().first(), selectBox.getCoord0().second(), mouseX, mouseY);
+                    selectGraph = SelectGraph(selectBox);
+                    clear();
+                    if (selectGraph.isEmpty())
+                        System.out.println("未选中任何图形");
+                    selectMode=SELECTMODE.COPY;//自动切换到移动模式
+                    System.out.println("selectMode :"+selectMode);
+                    List<BaseGraph> tmp=new ArrayList<>();
+                    tmp.add(selectBox);
+                    reDraw(tmp);
+                }
             } catch (NullPointerException e) {
                e.printStackTrace();
             }
         }
-        */
+        reDraw(graphList);
     }
     @FXML
     private void handleSave (ActionEvent event)

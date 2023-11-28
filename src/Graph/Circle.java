@@ -17,6 +17,16 @@ public class Circle extends BaseGraph{
         setType(GRAPHTYPE.CIRCLE);
         SetBound(x,y,r);
     }
+    public Circle(Circle c)
+    {
+        this.setCoord0(c.getCoord0().first(),c.getCoord0().second());
+        this.radius=c.radius;
+        this.lineWidth=c.lineWidth;
+        this.fillColor=c.fillColor;
+        this.borderColor=c.borderColor;
+        setType(GRAPHTYPE.CIRCLE);
+        SetBound(c.getCoord0().first(),c.getCoord0().second(),radius);
+    }
     public void setRadius(double r)
     {
         radius=r;
@@ -25,7 +35,6 @@ public class Circle extends BaseGraph{
     {
         super.SetBound(x-r,y-r,x+r,y+r);
     }
-
     public Color getFillColor() {
         return fillColor;
     }

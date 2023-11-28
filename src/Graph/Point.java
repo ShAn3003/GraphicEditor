@@ -20,6 +20,18 @@ public class Point extends BaseGraph{
         this.lineWidth=lineWidth;
         setType(GRAPHTYPE.POINT);
     }
+    public Point(Point pl)
+    {
+        setCoord0(pl.getCoord0().first(),pl.getCoord0().second());
+        points=new ArrayList<>();
+        for(Tuple<Double, Double> p :pl.getPoints())
+        {
+            points.add(new Tuple<Double,Double>(p.first(),p.second()));
+        }
+        this.fillcolor=pl.fillcolor;
+        this.lineWidth=pl.lineWidth;
+        setType(GRAPHTYPE.POINT);
+    }
     public List<Tuple<Double,Double>> getPoints()
     {
         return points;
@@ -31,7 +43,7 @@ public class Point extends BaseGraph{
     public void add(double x,double y)
     {
         Tuple<Double,Double> t=new Tuple<Double,Double>(x,y);
-
+        SetBound(x,y);
         points.add(t);
     }
 

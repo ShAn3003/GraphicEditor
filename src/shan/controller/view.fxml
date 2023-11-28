@@ -80,7 +80,7 @@
                       onMouseExited="#canvasMouseExited"
                       onMouseMoved="#canvasMouseMoved"
                       onMousePressed="#canvasMousePressed"
-                      onMouseReleased="#cavasMouseReleased"
+                      onMouseReleased="#canvasMouseReleased"
                       width="2800" height="1200"/>
         </ScrollPane>
     </center>

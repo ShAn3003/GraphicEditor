@@ -17,9 +17,20 @@ public class Line extends BaseGraph {
         SetBound(x0,y0,x1,y1);
         setType(GRAPHTYPE.LINE);
     }
+    public Line(Line l) {
+        setCoord0(l.getCoord0().first(),l.getCoord0().second());
+        coord1=new Tuple<Double,Double>(l.getCoord1().first(),l.getCoord1().second());
+        this.lineColor=l.lineColor;
+        this.lineWidth=l.lineWidth;
+        SetBound(l.getCoord0().first(),
+                l.getCoord0().second(),
+                l.getCoord1().first(),
+                l.getCoord1().second());
+        setType(GRAPHTYPE.LINE);
+    }
     public void SetBound(double x0,double y0,double x1,double y1)
     {
-        super.SetBound(x0,y0,x1,y1);
+        super.SetBound(min(x0,x1),min(y0,y1), max(x0,x1), max(y0,y1));
     }
 
     public Color getLineColor() {

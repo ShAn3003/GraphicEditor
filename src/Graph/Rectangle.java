@@ -20,14 +20,31 @@ public class Rectangle extends BaseGraph{
         setType(GRAPHTYPE.RECTANGLE);
         SetBound(x0,y0,x1,y1);
     }
+    public Rectangle(Rectangle rect)
+    {
+        setCoord0(rect.getCoord0().first(),rect.getCoord0().second());
+        coord1=new Tuple<Double,Double>(rect.getCoord1().first(),rect.getCoord1().second());
+        this.lineWidth=rect.lineWidth;
+        this.fillColor=rect.fillColor;
+        this.borderColor=rect.borderColor;
+        setType(GRAPHTYPE.RECTANGLE);
+        SetBound(rect.getCoord0().first(),
+                rect.getCoord0().second(),
+                rect.getCoord1().first(),
+                rect.getCoord1().second());
+    }
 
-    public void setCoord1(double x,double y) {
+    public Tuple<Double, Double> getCoord1() {
+        return coord1;
+    }
+
+    public void setCoord1(double x, double y) {
         this.coord1 = new Tuple<Double,Double>(x,y);
     }
 
     @Override
     public void SetBound(double x0, double y0, double x1, double y1) {
-        super.SetBound(x0,y0, x1, y1);
+        super.SetBound(min(x0,x1),min(y0,y1), max(x0,x1), max(y0,y1));
     }
 
     public Color getFillColor() {
