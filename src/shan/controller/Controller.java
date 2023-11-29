@@ -1030,31 +1030,88 @@ public class Controller {
     @FXML
     private void handleNew(ActionEvent event) {
         // 处理“New”菜单项的逻辑
-        System.out.println("New MenuItem clicked");
+        if (!graphList.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New");
+            alert.setHeaderText("Unsave Changes");
+            alert.setContentText("Do you want to save changes before creating a new file?");
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+            if (result == ButtonType.YES) {
+                // 保存文件
+                handleSave(event);
+                clear();
+                // 清空graphlist
+                graphList = new ArrayList<>();
+            } else if (result == ButtonType.NO) {
+                // 不保存文件
+                clear();
+                // 清空graphlist
+                graphList = new ArrayList<>();
+            } else {
+                //System.out.println("Cancel New");
+                return;
+            }
+        } else {
+            clear();
+        }
     }
 
     @FXML
     private void handleOpen(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Graph Parameters");
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Graph Parameters");
+        
         // 设置文件选择器的默认扩展名和过滤器
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
+        
+        if (!graphList.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Open");
+            alert.setHeaderText("Unsave Changes");
+            alert.setContentText("Do you want to save changes before opening a new file?");
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+            if (result == ButtonType.YES) {
+                // 保存文件
+                handleSave(event);
+                // 显示打开对话框并获取用户选择的文件
+                File file = fileChooser.showOpenDialog(new Stage());
+                if (file != null) {
+                    List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+                    graphList = loadedGraphs;
+                    // 清空画布
+                    clear();
+                    // 在画布上显示加载的图形
+                    Draw(loadedGraphs);
+                }
 
-        // 显示打开对话框并获取用户选择的文件
-        File file = fileChooser.showOpenDialog(new Stage());
-
-        // 如果用户选择了文件，则加载参数并显示在画布上
-        if (file != null) {
-            List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
-            graphList = loadedGraphs;
-
-            // 清空画布
-            clear();
-
-            // 在画布上显示加载的图形
-            Draw(loadedGraphs);
+            } else if (result == ButtonType.NO) {
+                File file = fileChooser.showOpenDialog(new Stage());
+                if (file != null) {
+                    List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+                    graphList = loadedGraphs;
+                    // 清空画布
+                    clear();
+                    // 在画布上显示加载的图形
+                    Draw(loadedGraphs);
+                }
+            } else {
+                //System.out.println("Cancel New");
+                return;
+            }
+        } else {
+            File file = fileChooser.showOpenDialog(new Stage());
+                if (file != null) {
+                    List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+                    graphList = loadedGraphs;
+                    // 清空画布
+                    clear();
+                    // 在画布上显示加载的图形
+                    Draw(loadedGraphs);
+                }
         }
     }
 
