@@ -30,7 +30,7 @@
                 <MenuItem mnemonicParsing="true" onAction="#handleUndo" text="_Undo"/>
             </Menu>
             <Menu mnemonicParsing="true" text="_Additional">
-                <MenuItem mnemonicParsing="true" disable="true" onAction="#handleHelp" text="_Help"/>
+                <MenuItem mnemonicParsing="true" disable="false" onAction="#handleHelp" text="_Help"/>
                 <MenuItem mnemonicParsing="true" disable="true" onAction="#SetCanvasColor" text="_CanvasColor"/>
             </Menu>
         </MenuBar>

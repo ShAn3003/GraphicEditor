@@ -1,20 +1,28 @@
 package shan.controller;
 
 import Graph.*;
+import Graph.Point;
+import Graph.Rectangle;
 import IOHandle.Load;
 import IOHandle.Save;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -22,14 +30,17 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.geometry.Pos;
 import shan.interfaces.MyCanvas;
-import shan.interfaces.MyTextArea;
 import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +48,9 @@ import static java.lang.Math.abs;
 import static shan.interfaces.MyCanvas.MyCanvasMode.SELECT;
 
 public class Controller {
+    public void cavasMouseReleased(MouseEvent event) {
+    }
+
     //暂时放在这里
     public enum SELECTMODE{
         COPY,
@@ -630,20 +644,93 @@ public class Controller {
 
     }
 
-    private void test() {
-    }
-
-
-    @FXML
-    public void canvasMouseDragEnter(MouseDragEvent event)
-    //当鼠标拖拽进入 Canvas 区域时触发
+    private void setSelectPara()
     {
+        paraSetInter.getChildren().clear();
+
+        Label fillColorLabel = new Label("对齐选项");
+        Button leftAligned = new Button("左对齐");
+        leftAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button centerAligned = new Button("居中对齐");
+        centerAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button rightAligned = new Button("右对齐");
+        rightAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button topAligned = new Button("顶端对齐");
+        topAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+    }
+        });
+        Button bottomAligned = new Button("底端对齐");
+        bottomAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button verCenAligned = new Button("垂直居中对齐");
+        verCenAligned.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button copyButton = new Button("Copy");
+        copyButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        Button delButton = new Button("delete");
+        delButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                System.out.println("按钮被按下了！");
+            }
+        });
+        // 添加其他共有的参数设置组件，如果有的话
+
+        paraSetInter.getChildren().addAll(fillColorLabel, leftAligned,rightAligned,topAligned,centerAligned,bottomAligned,verCenAligned,copyButton,delButton);
+
+
+
+    }
+    //
+    @FXML
+    public void canvasMouseDragEnter(MouseDragEvent event) {
+
     }
 
     @FXML
     public void canvasMouseDragExit(MouseDragEvent event)
     //当鼠标拖拽退出 Canvas 区域时触发。
     {
+        System.out.println("触发拖拽退出画布");
     }
 
     @FXML
@@ -934,14 +1021,19 @@ public class Controller {
     }
 
     private void openHelpDocument() {
-        String helpDocumentPath = "path/to/your/help/document.pdf";  // 替换为你的帮助文档的路径
+        String helpDocumentPath = "src" + File.separator + "shan" + File.separator + "help" + File.separator + "GraphicEditor-ShAn.pdf";
         // 尝试使用默认的系统关联应用程序打开文档
-        //try {
-        //    Desktop.getDesktop().open(new File(helpDocumentPath));
-        //} catch (IOException e) {
-            // 处理异常，例如文档无法打开的情况
-        //    e.printStackTrace();
-        //}
+        try {
+            if (Files.exists(Paths.get(helpDocumentPath))) {
+                Desktop.getDesktop().open(new File(helpDocumentPath));
+            } else {
+                System.out.println("File does not exist: " + helpDocumentPath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Desktop operations not supported on this platform");
+        }
     }
 
     private Color canvasColor;
