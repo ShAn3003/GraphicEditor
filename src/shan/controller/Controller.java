@@ -48,6 +48,9 @@ import static java.lang.Math.abs;
 import static shan.interfaces.MyCanvas.MyCanvasMode.SELECT;
 
 public class Controller {
+    public void cavasMouseReleased(MouseEvent event) {
+    }
+
     //暂时放在这里
     public enum SELECTMODE{
         COPY,
@@ -347,7 +350,7 @@ public class Controller {
             } else if ("Select".equals(clickedButton.getText())) {
                 canvas.setCurrentMode(SELECT);
                 selectMode=SELECTMODE.SELECT;
-//                setEllipsePara();
+                setSelectPara();
             }
         }
     }
@@ -372,10 +375,8 @@ public class Controller {
     private void drawPencil(double centerX, double centerY) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         double radius = lineWidth;
-
         // 设置笔触的颜色
         gc.setFill(fillColor);
-
         // 绘制圆
         gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
     }
@@ -388,7 +389,6 @@ public class Controller {
         gc.setLineWidth(lineWidth);
         // 设置填充颜色
         gc.setFill(fillColor);
-
         //清除之前的矩形，实现实时化
         //gc.clearRect(x0, y0,centerX-x0,centerY-y0);
         //绘制矩形
