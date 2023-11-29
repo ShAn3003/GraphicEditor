@@ -17,7 +17,6 @@ public class MyCanvas extends Canvas {
     {
         super();
         currentMode=MyCanvasMode.SELECT;
-
     }
 
     public MyCanvasMode getCurrentMode()
