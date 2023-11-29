@@ -885,6 +885,7 @@ public class Controller {
         // 如果用户选择了文件，则加载参数并显示在画布上
         if (file != null) {
             List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+            graphList = loadedGraphs;
 
             // 清空画布
             clear();
