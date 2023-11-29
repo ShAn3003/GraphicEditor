@@ -178,14 +178,15 @@ public class Load {
                                     String[] lineWidthTokens = line.split(": ");
                                     lineWidth = Double.parseDouble(lineWidthTokens[1]);
                                 }
-                                loadedGraphs.add(new Point(x, y, fillcolor, lineWidth));
+                                Point p=new Point(x, y, fillcolor, lineWidth);
                                 while((line = reader.readLine()) != null && line.startsWith("Point: ")){
                                     String[] lineTokens = line.split(": ");
                                     String[] coordTokens = lineTokens[1].split(", ");
                                     x = Double.parseDouble(coordTokens[0]);
                                     y = Double.parseDouble(coordTokens[1]);
-                                    loadedGraphs.add(new Point(x, y, fillcolor, lineWidth));
+                                    p.add(x,y);
                                 }
+                                loadedGraphs.add(p);
                             }
                             break;
                         case "TextBox":

@@ -18,6 +18,7 @@ public class Point extends BaseGraph{
         points=new ArrayList<>();
         this.fillcolor=fillcolor;
         this.lineWidth=lineWidth;
+        super.SetBound(x,y,x,y);
         setType(GRAPHTYPE.POINT);
     }
     public Point(Point pl)
