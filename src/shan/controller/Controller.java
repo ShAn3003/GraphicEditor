@@ -21,8 +21,8 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
+import javafx.scene.text.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -32,11 +32,11 @@ import javafx.geometry.Pos;
 import shan.interfaces.MyCanvas;
 import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.awt.TextField;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.abs;
-import static shan.interfaces.MyCanvas.MyCanvasMode.SELECT;
 
 public class Controller {
     public void cavasMouseReleased(MouseEvent event) {
@@ -53,7 +52,6 @@ public class Controller {
 
     //暂时放在这里
     public enum SELECTMODE{
-        COPY,
         MOVE,
         SELECT
     }
@@ -75,7 +73,6 @@ public class Controller {
     private void initialize() {
         System.out.println("Initialize Called!");
 //        各种参数变量初始化
-//        canvas.setStyle("-fx-border-color: black; -fx-border-width: 12px;");
         fillColor = Color.TRANSPARENT;
         borderColor = Color.BLACK;
         lineColor = Color.BLACK;
@@ -94,6 +91,8 @@ public class Controller {
 
         // 设置斜体
         remarkArea.setFont(Font.font("华文仿宋", FontWeight.NORMAL, FontPosture.ITALIC, 20));
+        graphList=new ArrayList<>();
+        selectGraph=new ArrayList<>();
     }
 
     @FXML
@@ -130,6 +129,7 @@ public class Controller {
     private Rectangle selectBox;
     private ALIGNMODE alignMode;
     private List<Tag> TagList;
+    private  String tagText;
     private Tuple<Double,Double> anchorPoint;//目前只用于移动复制时判断相对位移
     private void setShapeParameters(String shapeType, Color fillColor, Color borderColor, double lineWidth) {
         paraSetInter.getChildren().clear();
@@ -348,7 +348,7 @@ public class Controller {
                 canvas.setCurrentMode(MyCanvas.MyCanvasMode.POINT);
                 setDrawPara();
             } else if ("Select".equals(clickedButton.getText())) {
-                canvas.setCurrentMode(SELECT);
+                canvas.setCurrentMode(MyCanvas.MyCanvasMode.SELECT);
                 selectMode=SELECTMODE.SELECT;
                 setSelectPara();
             }
@@ -375,8 +375,10 @@ public class Controller {
     private void drawPencil(double centerX, double centerY) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         double radius = lineWidth;
+
         // 设置笔触的颜色
         gc.setFill(fillColor);
+
         // 绘制圆
         gc.fillOval(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
     }
@@ -389,6 +391,7 @@ public class Controller {
         gc.setLineWidth(lineWidth);
         // 设置填充颜色
         gc.setFill(fillColor);
+
         //清除之前的矩形，实现实时化
         //gc.clearRect(x0, y0,centerX-x0,centerY-y0);
         //绘制矩形
@@ -502,10 +505,26 @@ public class Controller {
     }
     private void delete(List<BaseGraph> list)
     {
-        for(BaseGraph g:list)
+        for(BaseGraph graph:list)
         {
-            graphList.remove(g);
+            graphList.remove(graph);//在画布中删除相关信息
+            for(String text:graph.getTag())//在tag中删除相关信息
+            {
+                for(Tag tag:TagList)
+                {
+                    if(tag.getTag().equals(text))
+                    {
+                        tag.remove(graph);
+                        break;
+                    }
+                }
+            }
+
         }
+        clear();
+        Draw(graphList);
+        selectBox=null;
+        selectMode=SELECTMODE.SELECT;
     }
     private void copy(List<BaseGraph> list)
     {
@@ -530,6 +549,8 @@ public class Controller {
                 graphList.add(new TextBox(graph));
             }
         }
+        clear();
+        Draw(graphList);
     }
     private void clear(Double x, Double y, Double width, Double height) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -547,7 +568,10 @@ public class Controller {
             {
                 double dx=selectBox.getLeft().first()-g.getLeft().first();
                 double dy=0.0;
-                g.move(dx,dy);
+                if(g.getType() != BaseGraph.GRAPHTYPE.TEXTBOX)
+                {
+                    g.move(dx, dy);
+                }
             }
         }else if(alignMode==ALIGNMODE.RIGHT)
         {
@@ -555,7 +579,10 @@ public class Controller {
             {
                 double dx=selectBox.getRight().first()-g.getRight().first();
                 double dy=0.0;
-                g.move(dx,dy);
+                if(g.getType() != BaseGraph.GRAPHTYPE.TEXTBOX)
+                {
+                    g.move(dx, dy);
+                }
             }
         }else if(alignMode==ALIGNMODE.BOTTOM)
         {
@@ -563,7 +590,10 @@ public class Controller {
             {
                 double dx=0.0;
                 double dy=selectBox.getRight().second()-g.getRight().second();
-                g.move(dx,dy);
+                if(g.getType() != BaseGraph.GRAPHTYPE.TEXTBOX)
+                {
+                    g.move(dx, dy);
+                }
             }
         }else if(alignMode==ALIGNMODE.TOP)
         {
@@ -571,7 +601,10 @@ public class Controller {
             {
                 double dx=0.0;
                 double dy=selectBox.getLeft().second()-g.getLeft().second();
-                g.move(dx,dy);
+                if(g.getType() != BaseGraph.GRAPHTYPE.TEXTBOX)
+                {
+                    g.move(dx, dy);
+                }
             }
         }else if(alignMode==ALIGNMODE.HORIZONTAL)
         {
@@ -579,7 +612,10 @@ public class Controller {
             {
                 double dx=0.0;
                 double dy=(selectBox.getLeft().second()+selectBox.getRight().second())/2-(g.getLeft().second()+g.getRight().second())/2;
-                g.move(dx,dy);
+                if(g.getType() != BaseGraph.GRAPHTYPE.TEXTBOX)
+                {
+                    g.move(dx, dy);
+                }
             }
         }else if(alignMode==ALIGNMODE.VERTICAL)
         {
@@ -587,9 +623,16 @@ public class Controller {
             {
                 double dx=(selectBox.getLeft().first()+selectBox.getRight().first())/2-(g.getLeft().first()+g.getRight().first())/2;
                 double dy=0.0;
-                g.move(dx,dy);
+                if(g.getType() != BaseGraph.GRAPHTYPE.TEXTBOX)
+                {
+                    g.move(dx, dy);
+                }
             }
         }
+        clear();
+        List<BaseGraph> tmp=new ArrayList<>();
+        tmp.add(selectBox);
+        Draw(tmp);
         Draw(graphList);
     }
     private List<BaseGraph> SelectGraph(Rectangle selectBox) {
@@ -616,32 +659,45 @@ public class Controller {
             }
         }
     }
-    @FXML
-    private void canvasMouseClicked(MouseEvent event)
-    //当鼠标在 Canvas 上单击时触发
+    private void addTag(String text)
     {
-
+        for(BaseGraph graph:selectGraph)
+        {
+            graph.addTag(text);
+        }
+        for(Tag tag:TagList)
+        {
+            if(text.equals(tag.getTag()))
+            {
+                tag.add(selectGraph);
+                return;
+            }
+        }
+        TagList.add(new Tag(selectGraph,text));
     }
-
     private void setSelectPara()
     {
-        paraSetInter.getChildren().clear();
 
+        paraSetInter.getChildren().clear();
         Label fillColorLabel = new Label("对齐选项");
         Button leftAligned = new Button("左对齐");
         leftAligned.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("左对齐");
+                alignMode=ALIGNMODE.LEFT;
+                align(selectGraph);
             }
         });
-        Button centerAligned = new Button("居中对齐");
+        Button centerAligned = new Button("水平居中对齐");
         centerAligned.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("水平居中对齐");
+                alignMode=ALIGNMODE.HORIZONTAL;
+                align(selectGraph);
             }
         });
         Button rightAligned = new Button("右对齐");
@@ -649,7 +705,9 @@ public class Controller {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("右对齐");
+                alignMode=ALIGNMODE.RIGHT;
+                align(selectGraph);
             }
         });
         Button topAligned = new Button("顶端对齐");
@@ -657,15 +715,19 @@ public class Controller {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
-            }
+                System.out.println("顶端对齐");
+                alignMode=ALIGNMODE.TOP;
+                align(selectGraph);
+    }
         });
         Button bottomAligned = new Button("底端对齐");
         bottomAligned.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("底端对齐");
+                alignMode=ALIGNMODE.BOTTOM;
+                align(selectGraph);
             }
         });
         Button verCenAligned = new Button("垂直居中对齐");
@@ -673,38 +735,72 @@ public class Controller {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("垂直居中对齐");
+                alignMode=ALIGNMODE.VERTICAL;
+                align(selectGraph);
             }
         });
-        Button copyButton = new Button("Copy");
+        Button copyButton = new Button("复制");
         copyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("复制");
+                copy(selectGraph);
             }
         });
-        Button delButton = new Button("delete");
+        Button delButton = new Button("删除");
         delButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // 在这里编写按钮按下时要执行的代码
-                System.out.println("按钮被按下了！");
+                System.out.println("删除");
+                delete(selectGraph);
+            }
+        });
+
+        TextArea textArea = new TextArea(tagText);
+        // 添加ChangeListener来监听TextArea的文本变化
+        textArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Text in TextArea changed: " + newValue);
+            tagText = newValue;
+            // 在这里处理文本变化后的逻辑
+        });
+
+        Button TagButton = new Button("Tag");
+        TagButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // 在这里编写按钮按下时要执行的代码
+                if(TagList==null)
+                    TagList=new ArrayList<>();
+                boolean find=false;
+                if(tagText=="")
+                {
+                    tagText="default";
+                }
+                for(Tag tag:TagList)
+                {
+                    if(tag.getTag().equals(tagText))
+                    {
+                        showTag(tagText);
+                        System.out.println("显示tag图形");
+                        find=true;
+                        break;
+                    }
+                }
+                if(find==false)
+                {
+                    addTag(tagText);
+                    System.out.println("新增tag:"+tagText);
+
+                }
             }
         });
         // 添加其他共有的参数设置组件，如果有的话
-
-        paraSetInter.getChildren().addAll(fillColorLabel, leftAligned,rightAligned,topAligned,centerAligned,bottomAligned,verCenAligned,copyButton,delButton);
-
-
+        paraSetInter.getChildren().addAll(fillColorLabel, leftAligned,rightAligned,topAligned,centerAligned,bottomAligned,verCenAligned,copyButton,delButton,TagButton,textArea);
 
     }
-    //
-    @FXML
-    public void canvasMouseDragEnter(MouseDragEvent event) {
-
-    }
-
 
     @FXML
     public void canvasMouseDragExit(MouseDragEvent event)
@@ -769,20 +865,7 @@ public class Controller {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                TextBox t = new TextBox(coord1.first(), coord1.second(), mouseX, mouseY);
-                t.setText(textFiled);
-                t.setTextSize(textSize);
-                t.setTextColor(textColor);
-                t.setSelectedFontStyle(selectedFontStyle);
-                graphList.add(t);
-                //drawText(coord1.first(), coord1.second());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == SELECT ) {
+        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT ) {
             try {
                 if(selectMode==SELECTMODE.SELECT)
                 {
@@ -797,6 +880,7 @@ public class Controller {
                     {
                         g.move(dx,dy);
                     }
+                    selectBox.move(dx,dy);
                 }
                 anchorPoint=new Tuple<Double,Double>(mouseX,mouseY);
             } catch (NullPointerException e) {
@@ -805,37 +889,13 @@ public class Controller {
         }
         clear();
         Draw(graphList);
-        if(canvas.getCurrentMode() == SELECT && selectMode==SELECTMODE.SELECT)
+        if(canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT)
         {
             List<BaseGraph> tmp=new ArrayList<>();
             tmp.add(selectBox);
             Draw(tmp);
         }
         //reDraw(selectGraph);
-    }
-
-    @FXML
-    public void canvasMouseDragOver(MouseDragEvent event)
-    // 当鼠标拖拽在 Canvas 上悬停时触发。
-    {
-    }
-
-    @FXML
-    public void canvasMouseDragReleased(MouseDragEvent event)
-    //当鼠标拖拽释放时触发。
-    {
-    }
-
-    @FXML
-    public void canvasMouseEntered(MouseEvent event)
-    //当鼠标进入 Canvas 区域时触发
-    {
-    }
-
-    @FXML
-    public void canvasMouseExited(MouseEvent event)
-    //当鼠标退出 Canvas 区域时触发。
-    {
     }
 
     @FXML
@@ -867,7 +927,7 @@ public class Controller {
             //
             graphList.add(e);
         } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.POINT) {
-            Point p = new Point(mouseX, mouseY, lineColor, lineWidth);
+            Point p = new Point(mouseX, mouseY, fillColor, lineWidth);
             p.SetBound(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(p);
@@ -875,20 +935,23 @@ public class Controller {
             TextBox t = new TextBox(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(t);
-        }else if (canvas.getCurrentMode() == SELECT) {
+        }else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT) {
             if(selectMode==SELECTMODE.SELECT) {
                 selectBox = new Rectangle(mouseX, mouseY, mouseX, mouseY, Color.TRANSPARENT, Color.RED, lineWidth);
-            }else {
+            }
+            else
+            {
                 anchorPoint=new Tuple<Double,Double>(mouseX,mouseY);
             }
+            if(selectMode==SELECTMODE.MOVE && !(mouseX>=selectBox.getLeft().first()&&
+                    mouseX<=selectBox.getRight().first()&&
+                    mouseY>=selectBox.getLeft().second()&&
+                    mouseY<=selectBox.getRight().second()))
+            {
+                selectBox=selectBox = new Rectangle(mouseX, mouseY, mouseX, mouseY, Color.TRANSPARENT, Color.RED, lineWidth);
+                selectMode=SELECTMODE.SELECT;
+            }
         }
-
-    }
-
-    @FXML
-    public void canvasMouseMoved(MouseEvent event)
-    //当鼠标在 Canvas 上移动时触发
-    {
 
     }
 
@@ -898,24 +961,40 @@ public class Controller {
     {
         double mouseX = event.getX();
         double mouseY = event.getY();
-        if (canvas.getCurrentMode() == SELECT) {
+        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.SELECT) {
             try {
                 if(selectMode==SELECTMODE.SELECT) {
                     selectBox.setCoord1(mouseX, mouseY);
                     selectBox.SetBound(selectBox.getCoord0().first(), selectBox.getCoord0().second(), mouseX, mouseY);
                     selectGraph = SelectGraph(selectBox);
                     clear();
-                    if (selectGraph.isEmpty())
-                        System.out.println("未选中任何图形");
-                    selectMode=SELECTMODE.MOVE;//自动切换到移动模式
+                    if(!selectGraph.isEmpty())
+                    {
+                        selectMode = SELECTMODE.MOVE;//自动切换到移动模式
+                        List<BaseGraph> tmp = new ArrayList<>();
+                        tmp.add(selectBox);
+                        Draw(tmp);
+                    }
                     System.out.println("selectMode :"+selectMode);
 
-                    List<BaseGraph> tmp=new ArrayList<>();
-                    tmp.add(selectBox);
-                    Draw(tmp);
                 }
             } catch (NullPointerException e) {
                e.printStackTrace();
+            }
+        }else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
+            try {
+                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
+                TextBox t = new TextBox(coord1.first(), coord1.second()-textSize/2,
+                        coord1.first()+textFiled.length()*textSize/2,
+                        coord1.second());
+                t.setText(textFiled);
+                t.setTextSize(textSize);
+                t.setTextColor(textColor);
+                t.setSelectedFontStyle(selectedFontStyle);
+                graphList.add(t);
+                //drawText(coord1.first(), coord1.second());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
         Draw(graphList);
@@ -953,24 +1032,82 @@ public class Controller {
     @FXML
     private void handleNew(ActionEvent event) {
         // 处理“New”菜单项的逻辑
-        System.out.println("New MenuItem clicked");
+        if (!graphList.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New");
+            alert.setHeaderText("Unsave Changes");
+            alert.setContentText("Do you want to save changes before creating a new file?");
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+            if (result == ButtonType.YES) {
+                // 保存文件
+                handleSave(event);
+                clear();
+                // 清空graphlist
+                graphList = new ArrayList<>();
+            } else if (result == ButtonType.NO) {
+                // 不保存文件
+                clear();
+                // 清空graphlist
+                graphList = new ArrayList<>();
+            } else {
+                //System.out.println("Cancel New");
+                return;
+            }
+        } else {
+            clear();
+        }
     }
 
     @FXML
     private void handleOpen(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Graph Parameters");
+        fileChooser.setTitle("Open Graph Parameters");
 
         // 设置文件选择器的默认扩展名和过滤器
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
 
+        if (!graphList.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Open");
+            alert.setHeaderText("Unsave Changes");
+            alert.setContentText("Do you want to save changes before opening a new file?");
+            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+            if (result == ButtonType.YES) {
+                // 保存文件
+                handleSave(event);
         // 显示打开对话框并获取用户选择的文件
         File file = fileChooser.showOpenDialog(new Stage());
+                if (file != null) {
+                    List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+                    graphList = loadedGraphs;
+                    // 清空画布
+                    clear();
+                    // 在画布上显示加载的图形
+                    Draw(loadedGraphs);
+                }
 
-        // 如果用户选择了文件，则加载参数并显示在画布上
+            } else if (result == ButtonType.NO) {
+                File file = fileChooser.showOpenDialog(new Stage());
+                if (file != null) {
+                    List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+                    graphList = loadedGraphs;
+                    // 清空画布
+                    clear();
+                    // 在画布上显示加载的图形
+                    Draw(loadedGraphs);
+                }
+            } else {
+                //System.out.println("Cancel New");
+                return;
+            }
+        } else {
+            File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+            graphList = loadedGraphs;
 
             // 清空画布
             clear();
@@ -978,6 +1115,7 @@ public class Controller {
             // 在画布上显示加载的图形
             Draw(loadedGraphs);
         }
+    }
     }
 
     @FXML
@@ -997,6 +1135,7 @@ public class Controller {
         // 例如，打开一个帮助文档
         openHelpDocument();
     }
+
     private void openHelpDocument() {
         String helpDocumentPath = "src" + File.separator + "shan" + File.separator + "help" + File.separator + "GraphicEditor-ShAn.pdf";
         // 尝试使用默认的系统关联应用程序打开文档
@@ -1037,8 +1176,4 @@ public class Controller {
     private void SetCanvasColor(ActionEvent event) {
         setCanvasPara();
     }
-
-
-
-
 }

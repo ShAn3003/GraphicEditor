@@ -73,6 +73,8 @@ public class Line extends BaseGraph {
         info.append("Type: Line\n");
         info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
         info.append("Coord1: ").append(coord1.first()).append(", ").append(coord1.second()).append("\n");
+        info.append("LineColor: ").append(lineColor.toString()).append("\n");
+        info.append("LineWidth: ").append(lineWidth).append("\n");
         return info.toString();
     }
 

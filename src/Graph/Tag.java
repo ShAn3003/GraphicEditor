@@ -16,12 +16,22 @@ public class Tag {
         this.graphs=g;
         this.tag=s;
     }
-
+    public void add(List<BaseGraph> graphs)
+    {
+        for(BaseGraph graph:graphs)
+        {
+            this.graphs.add(graph);
+        }
+    }
     public String getTag() {
         return tag;
     }
 
     public List<BaseGraph> getGraphs() {
         return graphs;
+    }
+
+    public void remove(BaseGraph graph) {
+        this.graphs.remove(graph);
     }
 }
