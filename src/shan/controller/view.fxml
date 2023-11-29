@@ -86,7 +86,7 @@
     <bottom>
         <VBox alignment="TOP_CENTER"  prefHeight="200" prefWidth="-Infinity"  spacing="20">
             <Label text=" "/>
-            <Label fx:id="remarkArea" textAlignment="CENTER" text="HERE">
+            <Label fx:id="remarkArea" textAlignment="CENTER" text=" ">
                 <!-- 设置其他属性，如字体等 -->
             </Label>
         </VBox>

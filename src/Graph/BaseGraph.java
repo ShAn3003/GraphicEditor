@@ -1,6 +1,4 @@
 package Graph;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +6,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public abstract class BaseGraph {
-
     public enum GRAPHTYPE{
         CIRCLE,
         RECTANGLE,
@@ -25,9 +22,7 @@ public abstract class BaseGraph {
     private Tuple<Double,Double> right;
     private GRAPHTYPE type;
     private List<String>tag;
-    public BaseGraph(double a,double b) {
-
-    }
+    public BaseGraph(double a,double b) {}
     public BaseGraph() {
         setTag();
     }
@@ -45,20 +40,13 @@ public abstract class BaseGraph {
         left=new Tuple<Double,Double>(x0,y0);
         right=new Tuple<Double,Double>(x1,y1);
     }
-
     public Tuple<Double, Double> getLeft() {
         return left;
     }
-
     public Tuple<Double, Double> getRight() {
         return right;
     }
-
-    public void SetBound(double x, double y)//draw
-    {
-
-    }
-
+    public void SetBound(double x, double y){}//draw
     public String save()
     {
         return "";
@@ -67,15 +55,12 @@ public abstract class BaseGraph {
     public GRAPHTYPE getType() {
         return type;
     }
-
     public void setType(GRAPHTYPE type) {
         this.type = type;
     }
-
     public List<String> getTag() {
         return tag;
     }
-
     public void setTag() {
         this.tag = new ArrayList<>();
     }
