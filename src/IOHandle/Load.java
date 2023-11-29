@@ -1,11 +1,8 @@
 package IOHandle;
 
-import Graph.BaseGraph;
-import Graph.Round;
-import Graph.Rectangle;
-import Graph.Line;
-import Graph.Ellipse;
-import Graph.Point;
+import Graph.*;
+import javafx.scene.paint.Color;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +19,7 @@ public class Load {
                 if(line.startsWith("Type: ")){
                     String type = line.split(":")[1].trim();
                     switch (type) {
-                        case "Round":
+                        case "Circle":
                             {
                                 double x, y, radius;
                                 line = reader.readLine();                            
@@ -37,7 +34,7 @@ public class Load {
                                     String[] radiusTokens = line.split(": ");
                                     radius = Double.parseDouble(radiusTokens[1]);
                                 }
-                                loadedGraphs.add(new Round(x, y, radius));
+                                loadedGraphs.add(new Circle(x, y, radius, Color.TRANSPARENT,Color.BLACK,2.0));
                             }
                             break;
                         case "Rectangle":
@@ -57,7 +54,7 @@ public class Load {
                                     x1 = Double.parseDouble(coordTokens[0]);
                                     y1 = Double.parseDouble(coordTokens[1]);
                                 }
-                                loadedGraphs.add(new Rectangle(x0, y0, x1, y1));
+                                loadedGraphs.add(new Rectangle(x0, y0, x1, y1,Color.TRANSPARENT,Color.BLACK,2.0));
                             }
                             break;
                         case "Line":
@@ -77,7 +74,7 @@ public class Load {
                                     x1 = Double.parseDouble(coordTokens[0]);
                                     y1 = Double.parseDouble(coordTokens[1]);
                                 }
-                                loadedGraphs.add(new Line(x0, y0, x1, y1));
+                                loadedGraphs.add(new Line(x0, y0, x1, y1,Color.BLACK,2.0));
                             }
                             break;
                         case "Ellipse":
@@ -97,7 +94,7 @@ public class Load {
                                     x1 = Double.parseDouble(coordTokens[0]);
                                     y1 = Double.parseDouble(coordTokens[1]);
                                 }
-                                loadedGraphs.add(new Ellipse(x0, y0, x1, y1));
+                                loadedGraphs.add(new Ellipse(x0, y0, x1, y1,Color.TRANSPARENT,Color.BLACK,2.0));
                             }
                             break;
                         case "Point":

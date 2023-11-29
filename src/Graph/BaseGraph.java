@@ -32,7 +32,7 @@ public abstract class BaseGraph {
 
     }
     // Getter和Setter方法
-    void setCoord0(double a,double b)
+    public void setCoord0(double a,double b)
     {
         coord0=new Tuple<Double,Double>(a,b);
     }

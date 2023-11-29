@@ -1,25 +1,33 @@
 package shan.controller;
 
 import Graph.*;
+import IOHandle.Load;
 import IOHandle.Save;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.geometry.Pos;
 import shan.interfaces.MyCanvas;
+import shan.interfaces.MyTextArea;
 import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -864,8 +872,26 @@ public class Controller {
 
     @FXML
     private void handleOpen(ActionEvent event) {
-        // 处理“Open”菜单项的逻辑
-        System.out.println("Open MenuItem clicked");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Graph Parameters");
+
+        // 设置文件选择器的默认扩展名和过滤器
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // 显示打开对话框并获取用户选择的文件
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        // 如果用户选择了文件，则加载参数并显示在画布上
+        if (file != null) {
+            List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+
+            // 清空画布
+            clear();
+
+            // 在画布上显示加载的图形
+            Draw(loadedGraphs);
+        }
     }
 
     @FXML
