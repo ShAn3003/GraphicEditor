@@ -16,4 +16,12 @@ public class Tuple<T1, T2> {
     public T2 second() {
         return _second;
     }
+
+    public void set_first(T1 _first) {
+        this._first = _first;
+    }
+
+    public void set_second(T2 _second) {
+        this._second = _second;
+    }
 }

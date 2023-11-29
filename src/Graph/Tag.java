@@ -30,4 +30,8 @@ public class Tag {
     public List<BaseGraph> getGraphs() {
         return graphs;
     }
+
+    public void remove(BaseGraph graph) {
+        this.graphs.remove(graph);
+    }
 }

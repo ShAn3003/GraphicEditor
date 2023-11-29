@@ -70,15 +70,8 @@
     <center>
         <ScrollPane prefWidth="Infinity" prefHeight="Infinity">
             <MyCanvas fx:id="canvas"
-                      onMouseClicked="#canvasMouseClicked"
-                      onMouseDragEntered="#canvasMouseDragEnter"
                       onMouseDragExited="#canvasMouseDragExit"
                       onMouseDragged="#canvasMouseDragged"
-                      onMouseDragOver="#canvasMouseDragOver"
-                      onMouseDragReleased="#canvasMouseDragReleased"
-                      onMouseEntered="#canvasMouseEntered"
-                      onMouseExited="#canvasMouseExited"
-                      onMouseMoved="#canvasMouseMoved"
                       onMousePressed="#canvasMousePressed"
                       onMouseReleased="#canvasMouseReleased"
                       width="2800" height="1200"/>

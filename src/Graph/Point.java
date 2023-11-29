@@ -86,7 +86,8 @@ public class Point extends BaseGraph{
         this.setCoord0(coord.first()+dx,coord.second()+dy);
         for(Tuple<Double,Double> p :points)
         {
-            p=new Tuple<Double,Double>(p.first()+dx,p.second()+dy);
+            p.set_first(p.first()+dx);
+            p.set_second(p.second()+dy);
         }
         super.SetBound(this.getLeft().first()+dx,
                 this.getLeft().second()+dy,

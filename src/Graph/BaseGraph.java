@@ -29,7 +29,7 @@ public abstract class BaseGraph {
 
     }
     public BaseGraph() {
-
+        setTag();
     }
     // Getter和Setter方法
     public void setCoord0(double a,double b)
