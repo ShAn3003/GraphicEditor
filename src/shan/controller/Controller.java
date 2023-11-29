@@ -736,64 +736,6 @@ public class Controller {
     {
         double mouseX = event.getX();
         double mouseY = event.getY();
-        /*
-        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
-            try {
-                Circle circle = (Circle) graphList.remove(graphList.size() - 1);
-                Tuple<Double, Double> coord = circle.getCoord0();
-                double dis = Math.sqrt(Math.pow((mouseX - coord.first()), 2) + Math.pow((mouseY - coord.second()), 2));
-                drawCircle(coord.first(), coord.second(), dis);
-                circle.setRadius(dis);
-                graphList.add(circle);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                Rectangle rect = new Rectangle(coord1.first(), coord1.second(), mouseX, mouseY, fillColor, borderColor, lineWidth);
-                coord1 = rect.getLeft();
-                Tuple<Double, Double> coord2 = rect.getRight();
-                drawRectangle(coord1.first(), coord1.second(), coord2.first() - coord1.first(), coord2.second() - coord1.second());
-                graphList.add(rect);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.LINE) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                Line l = new Line(coord1.first(), coord1.second(), mouseX, mouseY, lineColor, lineWidth);
-                drawLine(coord1.first(), coord1.second(), mouseX, mouseY);
-                graphList.add(l);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.ELLIPSE) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                double a = abs(coord1.first() - mouseX);
-                double b = abs(coord1.second() - mouseY);
-                Ellipse e = new Ellipse(coord1.first(), coord1.second(), a, b, fillColor, borderColor, lineWidth);
-                drawEllipse(coord1.first(), coord1.second(), a, b);
-                graphList.add(e);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                TextBox t = new TextBox(coord1.first(), coord1.second(), mouseX, mouseY);
-                t.setText(textFiled);
-                t.setTextSize(textSize);
-                t.setTextColor(textColor);
-                t.setSelectedFontStyle(selectedFontStyle);
-                graphList.add(t);
-                drawText(coord1.first(), coord1.second());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else
-        */
         if (canvas.getCurrentMode() == SELECT) {
             try {
                 if(selectMode==SELECTMODE.SELECT) {
@@ -803,7 +745,7 @@ public class Controller {
                     clear();
                     if (selectGraph.isEmpty())
                         System.out.println("未选中任何图形");
-                    selectMode=SELECTMODE.COPY;//自动切换到移动模式
+                    selectMode=SELECTMODE.MOVE;//自动切换到移动模式
                     System.out.println("selectMode :"+selectMode);
                     List<BaseGraph> tmp=new ArrayList<>();
                     tmp.add(selectBox);

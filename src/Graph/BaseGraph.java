@@ -1,17 +1,13 @@
 package Graph;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public abstract class BaseGraph {
-    public GRAPHTYPE getType() {
-        return type;
-    }
-
-    public void setType(GRAPHTYPE type) {
-        this.type = type;
-    }
 
     public enum GRAPHTYPE{
         CIRCLE,
@@ -28,6 +24,7 @@ public abstract class BaseGraph {
     //边界框右下角，
     private Tuple<Double,Double> right;
     private GRAPHTYPE type;
+    private List<String>tag;
     public BaseGraph(double a,double b) {
 
     }
@@ -67,6 +64,25 @@ public abstract class BaseGraph {
         return "";
     }
     public abstract void move(Double dx,Double dy);
+    public GRAPHTYPE getType() {
+        return type;
+    }
+
+    public void setType(GRAPHTYPE type) {
+        this.type = type;
+    }
+
+    public List<String> getTag() {
+        return tag;
+    }
+
+    public void setTag() {
+        this.tag = new ArrayList<>();
+    }
+    public void addTag(String tag)
+    {
+        this.tag.add(tag);
+    }
 }
 
 
