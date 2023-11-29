@@ -781,7 +781,7 @@ public class Controller {
             //
             graphList.add(e);
         } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.POINT) {
-            Point p = new Point(mouseX, mouseY, lineColor, lineWidth);
+            Point p = new Point(mouseX, mouseY, fillColor, lineWidth);
             p.SetBound(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(p);

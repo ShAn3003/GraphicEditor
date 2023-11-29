@@ -5,6 +5,7 @@ import static java.lang.Math.min;
 public class Ellipse extends BaseGraph {
     private Tuple<Double,Double> coord1;//左端点
     private Tuple<Double,Double> coord2;// 上端点
+    private Tuple<Double,Double> coord3;
 
     private Color fillColor;
     private Color borderColor;
@@ -12,6 +13,7 @@ public class Ellipse extends BaseGraph {
     public Ellipse(double x0,double y0,double x1,double y1,Color fillColor,Color borderColor,double lineWidth)
     {
         setCoord0(x0,y0);
+        coord3=new Tuple<Double,Double>(x1,y1);
         coord1=new Tuple<Double,Double>(min(2*x0-x1,x1),y0);
         coord2=new Tuple<Double,Double>(x0,min(2*y0-y1,y1));
         this.fillColor=fillColor;
@@ -50,6 +52,10 @@ public class Ellipse extends BaseGraph {
         return coord2;
     }
 
+    public Tuple<Double, Double> getCoord3() {
+        return coord3;
+    }
+
     public void setCoord1(Double x,Double y) {
         this.coord1 = new Tuple<Double,Double>(x,y);
     }
@@ -83,8 +89,10 @@ public class Ellipse extends BaseGraph {
         StringBuilder info = new StringBuilder();
         info.append("Type: Ellipse\n");
         info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
-        info.append("Coord1: ").append(coord1.first()).append(", ").append(coord1.second()).append("\n");
-        info.append("Coord2: ").append(coord2.first()).append(", ").append(coord2.second()).append("\n");
+        info.append("Coord3: ").append(coord3.first()).append(", ").append(coord3.second()).append("\n");
+        info.append("FillColor: ").append(fillColor.toString()).append("\n");
+        info.append("BorderColor: ").append(borderColor.toString()).append("\n");
+        info.append("LineWidth: ").append(lineWidth).append("\n");
         return info.toString();
     }
 
@@ -92,6 +100,7 @@ public class Ellipse extends BaseGraph {
     public void move(Double dx, Double dy) {
         Tuple<Double,Double> coord=this.getCoord0();
         this.setCoord0(coord.first()+dx,coord.second()+dy);
+        coord3=new Tuple<Double,Double>(coord3.first()+dx,coord3.second()+dy);
         coord1=new Tuple<Double,Double>(coord1.first()+dx,coord1.second()+dy);
         coord2=new Tuple<Double,Double>(coord2.first()+dx,coord2.second()+dy);
         super.SetBound(this.getLeft().first()+dx,

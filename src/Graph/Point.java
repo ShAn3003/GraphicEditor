@@ -67,18 +67,20 @@ public class Point extends BaseGraph{
     public void setLineWidth(double lineWidth) {
         this.lineWidth = lineWidth;
     }
+
     @Override
-    public String save() {
+    public String save(){
         StringBuilder info = new StringBuilder();
         info.append("Type: Point\n");
         info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
-
+        info.append("Fillcolor: ").append(fillcolor.toString()).append("\n");
+        info.append("LineWidth: ").append(lineWidth).append("\n");
         for (Tuple<Double, Double> point : points) {
             info.append("Point: ").append(point.first()).append(", ").append(point.second()).append("\n");
         }
         return info.toString();
     }
-
+    
     @Override
     public void move(Double dx, Double dy) {
         Tuple<Double,Double> coord=this.getCoord0();
