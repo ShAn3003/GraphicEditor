@@ -7,26 +7,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.geometry.Pos;
 import shan.interfaces.MyCanvas;
-import shan.interfaces.MyTextArea;
 import shan.interfaces.MyVBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +34,16 @@ public class Controller {
         COPY,
         MOVE,
         SELECT
+    }
+    public enum ALIGNMODE{
+        NONE,
+        LEFT,
+        RIGHT,
+        TOP,
+        BOTTOM,
+        HORIZONTAL,
+        VERTICAL
+
     }
     public Controller() {
         System.out.println("Controller Start!");
@@ -62,6 +65,7 @@ public class Controller {
         remarkArea.setFont(Font.font("华文仿宋", 20));
         canvas.setCurrentMode(MyCanvas.MyCanvasMode.SELECT);
         selectMode=SELECTMODE.SELECT;
+        alignMode=ALIGNMODE.NONE;
         // 设置粗体
         remarkArea.setFont(Font.font("华文仿宋", FontWeight.BOLD, 20));
 
@@ -101,7 +105,8 @@ public class Controller {
     private String selectedFontStyle;
     private String textFiled;
     private Rectangle selectBox;
-
+    private ALIGNMODE alignMode;
+    private List<Tag> TagList;
     private Tuple<Double,Double> anchorPoint;//目前只用于移动复制时判断相对位移
     private void setShapeParameters(String shapeType, Color fillColor, Color borderColor, double lineWidth) {
         paraSetInter.getChildren().clear();
@@ -405,7 +410,7 @@ public class Controller {
         gc.fillText(textFiled, x, y);
     }
 
-    private void reDraw(List<BaseGraph> list) {
+    private void Draw(List<BaseGraph> list) {
         Color fillColor0 = fillColor;
         Color borderColor0 = borderColor;
         Color lineColor0 = lineColor;
@@ -475,16 +480,16 @@ public class Controller {
         selectedFontStyle = selectedFontStyle0;
         textFiled = textFiled0;
     }
-    private void delete()
+    private void delete(List<BaseGraph> list)
     {
-        for(BaseGraph g:selectGraph)
+        for(BaseGraph g:list)
         {
             graphList.remove(g);
         }
     }
-    private void copy()
+    private void copy(List<BaseGraph> list)
     {
-        for (BaseGraph g : selectGraph) {
+        for (BaseGraph g : list) {
             if (g.getType() == BaseGraph.GRAPHTYPE.CIRCLE) {
                 Circle graph = (Circle) g;
                 graphList.add(new Circle(graph));
@@ -514,14 +519,67 @@ public class Controller {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(),canvas.getHeight());
     }
+    private void align(List<BaseGraph> list)
+    {
+        if(alignMode==ALIGNMODE.LEFT)
+        {
+            for(BaseGraph g:list)
+            {
+                Double dx=selectBox.getLeft().first()-g.getLeft().first();
+                Double dy=0.0;
+                g.move(dx,dy);
+            }
+        }else if(alignMode==ALIGNMODE.RIGHT)
+        {
+            for(BaseGraph g:list)
+            {
+                Double dx=selectBox.getRight().first()-g.getRight().first();
+                Double dy=0.0;
+                g.move(dx,dy);
+            }
+        }else if(alignMode==ALIGNMODE.BOTTOM)
+        {
+            for(BaseGraph g:list)
+            {
+                Double dx=0.0;
+                Double dy=selectBox.getRight().second()-g.getRight().second();
+                g.move(dx,dy);
+            }
+        }else if(alignMode==ALIGNMODE.TOP)
+        {
+            for(BaseGraph g:list)
+            {
+                Double dx=0.0;
+                Double dy=selectBox.getLeft().second()-g.getLeft().second();
+                g.move(dx,dy);
+            }
+        }else if(alignMode==ALIGNMODE.HORIZONTAL)
+        {
+            for(BaseGraph g:list)
+            {
+                Double dx=0.0;
+                Double dy=(selectBox.getLeft().second()+selectBox.getRight().second())/2-(g.getLeft().second()+g.getRight().second())/2;
+                g.move(dx,dy);
+            }
+        }else if(alignMode==ALIGNMODE.VERTICAL)
+        {
+            for(BaseGraph g:list)
+            {
+                Double dx=(selectBox.getLeft().first()+selectBox.getRight().first())/2-(g.getLeft().first()+g.getRight().first())/2;
+                Double dy=0.0;
+                g.move(dx,dy);
+            }
+        }
+        Draw(graphList);
+    }
     private List<BaseGraph> SelectGraph(Rectangle selectBox) {
         List<BaseGraph> select = new ArrayList<>();
         for (BaseGraph g : graphList) {
             if (g.getLeft().first() >= selectBox.getLeft().first() &&
                     g.getLeft().second() >= selectBox.getLeft().second() &&
                     g.getRight().first() <= selectBox.getRight().first() &&
-                    g.getRight().second() <= selectBox.getRight().second()) {
-                //graphList.remove(g);
+                    g.getRight().second() <= selectBox.getRight().second())
+            {
                 select.add(g);
             }
         }
@@ -642,12 +700,12 @@ public class Controller {
             }
         }
         clear();
-        reDraw(graphList);
+        Draw(graphList);
         if(canvas.getCurrentMode() == SELECT && selectMode==SELECTMODE.SELECT)
         {
             List<BaseGraph> tmp=new ArrayList<>();
             tmp.add(selectBox);
-            reDraw(tmp);
+            Draw(tmp);
         }
         //reDraw(selectGraph);
     }
@@ -736,64 +794,6 @@ public class Controller {
     {
         double mouseX = event.getX();
         double mouseY = event.getY();
-        /*
-        if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.CIRCLE) {
-            try {
-                Circle circle = (Circle) graphList.remove(graphList.size() - 1);
-                Tuple<Double, Double> coord = circle.getCoord0();
-                double dis = Math.sqrt(Math.pow((mouseX - coord.first()), 2) + Math.pow((mouseY - coord.second()), 2));
-                drawCircle(coord.first(), coord.second(), dis);
-                circle.setRadius(dis);
-                graphList.add(circle);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.RECTANGLE) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                Rectangle rect = new Rectangle(coord1.first(), coord1.second(), mouseX, mouseY, fillColor, borderColor, lineWidth);
-                coord1 = rect.getLeft();
-                Tuple<Double, Double> coord2 = rect.getRight();
-                drawRectangle(coord1.first(), coord1.second(), coord2.first() - coord1.first(), coord2.second() - coord1.second());
-                graphList.add(rect);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.LINE) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                Line l = new Line(coord1.first(), coord1.second(), mouseX, mouseY, lineColor, lineWidth);
-                drawLine(coord1.first(), coord1.second(), mouseX, mouseY);
-                graphList.add(l);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.ELLIPSE) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                double a = abs(coord1.first() - mouseX);
-                double b = abs(coord1.second() - mouseY);
-                Ellipse e = new Ellipse(coord1.first(), coord1.second(), a, b, fillColor, borderColor, lineWidth);
-                drawEllipse(coord1.first(), coord1.second(), a, b);
-                graphList.add(e);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                TextBox t = new TextBox(coord1.first(), coord1.second(), mouseX, mouseY);
-                t.setText(textFiled);
-                t.setTextSize(textSize);
-                t.setTextColor(textColor);
-                t.setSelectedFontStyle(selectedFontStyle);
-                graphList.add(t);
-                drawText(coord1.first(), coord1.second());
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else
-        */
         if (canvas.getCurrentMode() == SELECT) {
             try {
                 if(selectMode==SELECTMODE.SELECT) {
@@ -803,17 +803,18 @@ public class Controller {
                     clear();
                     if (selectGraph.isEmpty())
                         System.out.println("未选中任何图形");
-                    selectMode=SELECTMODE.COPY;//自动切换到移动模式
+                    selectMode=SELECTMODE.MOVE;//自动切换到移动模式
                     System.out.println("selectMode :"+selectMode);
+
                     List<BaseGraph> tmp=new ArrayList<>();
                     tmp.add(selectBox);
-                    reDraw(tmp);
+                    Draw(tmp);
                 }
             } catch (NullPointerException e) {
                e.printStackTrace();
             }
         }
-        reDraw(graphList);
+        Draw(graphList);
     }
     @FXML
     private void handleSave (ActionEvent event)
