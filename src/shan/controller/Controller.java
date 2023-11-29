@@ -686,7 +686,9 @@ public class Controller {
         } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
             try {
                 Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                TextBox t = new TextBox(coord1.first(), coord1.second(), mouseX, mouseY);
+                TextBox t = new TextBox(coord1.first(), coord1.second(),
+                        coord1.first()+textFiled.length()*textSize/2,
+                        coord1.second()-textSize/2);
                 t.setText(textFiled);
                 t.setTextSize(textSize);
                 t.setTextColor(textColor);
