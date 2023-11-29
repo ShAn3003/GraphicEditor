@@ -8,7 +8,7 @@ public class Ellipse extends BaseGraph {
 
     private Color fillColor;
     private Color borderColor;
-    private Double lineWidth;
+    private double lineWidth;
     public Ellipse(double x0,double y0,double x1,double y1,Color fillColor,Color borderColor,double lineWidth)
     {
         setCoord0(x0,y0);

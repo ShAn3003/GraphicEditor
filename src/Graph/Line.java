@@ -8,7 +8,7 @@ import static java.lang.Math.min;
 public class Line extends BaseGraph {
     private Tuple<Double,Double> coord1;
     private Color lineColor;
-    private Double lineWidth;
+    private double lineWidth;
     public Line(double x0,double y0,double x1,double y1,Color lineColor,Double lineWidth) {
         setCoord0(x0,y0);
         coord1=new Tuple<Double,Double>(x1,y1);

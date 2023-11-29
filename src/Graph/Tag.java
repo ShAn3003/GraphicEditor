@@ -16,4 +16,12 @@ public class Tag {
         this.graphs=g;
         this.tag=s;
     }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public List<BaseGraph> getGraphs() {
+        return graphs;
+    }
 }

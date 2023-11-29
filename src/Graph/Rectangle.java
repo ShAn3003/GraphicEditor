@@ -9,7 +9,7 @@ public class Rectangle extends BaseGraph{
     private Tuple<Double,Double> coord1;
     private Color fillColor;
     private Color borderColor;
-    private Double lineWidth;
+    private double lineWidth;
     public Rectangle(double x0,double y0,double x1,double y1,Color fillColor,Color borderColor ,Double lineWidth)
     {
         setCoord0(x0,y0);

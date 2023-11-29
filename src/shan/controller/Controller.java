@@ -99,8 +99,8 @@ public class Controller {
     private Color borderColor;
 
     private Color lineColor;
-    private Double lineWidth;
-    private Double textSize;
+    private double lineWidth;
+    private double textSize;
     private Color textColor;
     private String selectedFontStyle;
     private String textFiled;
@@ -414,8 +414,8 @@ public class Controller {
         Color fillColor0 = fillColor;
         Color borderColor0 = borderColor;
         Color lineColor0 = lineColor;
-        Double lineWidth0 = lineWidth;
-        Double textSize0 = textSize;
+        double lineWidth0 = lineWidth;
+        double textSize0 = textSize;
         Color textColor0 = textColor;
         String selectedFontStyle0 = selectedFontStyle;
         String textFiled0 = textFiled;
@@ -525,48 +525,48 @@ public class Controller {
         {
             for(BaseGraph g:list)
             {
-                Double dx=selectBox.getLeft().first()-g.getLeft().first();
-                Double dy=0.0;
+                double dx=selectBox.getLeft().first()-g.getLeft().first();
+                double dy=0.0;
                 g.move(dx,dy);
             }
         }else if(alignMode==ALIGNMODE.RIGHT)
         {
             for(BaseGraph g:list)
             {
-                Double dx=selectBox.getRight().first()-g.getRight().first();
-                Double dy=0.0;
+                double dx=selectBox.getRight().first()-g.getRight().first();
+                double dy=0.0;
                 g.move(dx,dy);
             }
         }else if(alignMode==ALIGNMODE.BOTTOM)
         {
             for(BaseGraph g:list)
             {
-                Double dx=0.0;
-                Double dy=selectBox.getRight().second()-g.getRight().second();
+                double dx=0.0;
+                double dy=selectBox.getRight().second()-g.getRight().second();
                 g.move(dx,dy);
             }
         }else if(alignMode==ALIGNMODE.TOP)
         {
             for(BaseGraph g:list)
             {
-                Double dx=0.0;
-                Double dy=selectBox.getLeft().second()-g.getLeft().second();
+                double dx=0.0;
+                double dy=selectBox.getLeft().second()-g.getLeft().second();
                 g.move(dx,dy);
             }
         }else if(alignMode==ALIGNMODE.HORIZONTAL)
         {
             for(BaseGraph g:list)
             {
-                Double dx=0.0;
-                Double dy=(selectBox.getLeft().second()+selectBox.getRight().second())/2-(g.getLeft().second()+g.getRight().second())/2;
+                double dx=0.0;
+                double dy=(selectBox.getLeft().second()+selectBox.getRight().second())/2-(g.getLeft().second()+g.getRight().second())/2;
                 g.move(dx,dy);
             }
         }else if(alignMode==ALIGNMODE.VERTICAL)
         {
             for(BaseGraph g:list)
             {
-                Double dx=(selectBox.getLeft().first()+selectBox.getRight().first())/2-(g.getLeft().first()+g.getRight().first())/2;
-                Double dy=0.0;
+                double dx=(selectBox.getLeft().first()+selectBox.getRight().first())/2-(g.getLeft().first()+g.getRight().first())/2;
+                double dy=0.0;
                 g.move(dx,dy);
             }
         }
@@ -585,10 +585,20 @@ public class Controller {
         }
         return select;
     }
-
+    private void showTag(String text)
+    {
+        for(Tag tag:TagList)
+        {
+            if(tag.getTag().equals(text))
+            {
+                clear();
+                Draw(tag.getGraphs());
+            }
+        }
+    }
     @FXML
     private void canvasMouseClicked(MouseEvent event)
-    //当鼠标在 Canvas 上单击时触发。
+    //当鼠标在 Canvas 上单击时触发
     {
 
     }

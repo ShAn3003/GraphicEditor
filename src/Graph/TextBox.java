@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 public class TextBox extends BaseGraph{
     private Tuple<Double,Double> coord1;
-    private Double textSize;
+    private double textSize;
     private Color textColor;
     private String selectedFontStyle;
     private String text;

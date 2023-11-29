@@ -6,7 +6,7 @@ public class Circle extends BaseGraph{
     private double radius;
     private Color fillColor;
     private Color borderColor;
-    private Double lineWidth;
+    private double lineWidth;
     public Circle(double x, double y, double r, Color fillColor, Color borderColor , Double lineWidth)
     {
         this.setCoord0(x,y);
