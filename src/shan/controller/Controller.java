@@ -604,6 +604,25 @@ public class Controller {
             }
         }
     }
+    private void addTag(String text)
+    {
+        for(BaseGraph graph:selectGraph)
+        {
+            graph.addTag(text);
+        }
+        for(Tag tag:TagList)
+        {
+            if(tag.getTag().equals(text))//已存在
+            {
+                tag.add(selectGraph);
+                break;
+            }
+        }
+    }
+    private void delete()
+    {
+
+    }
     @FXML
     private void canvasMouseClicked(MouseEvent event)
     //当鼠标在 Canvas 上单击时触发
@@ -680,21 +699,6 @@ public class Controller {
                 Ellipse e = new Ellipse(coord1.first(), coord1.second(), a, b, fillColor, borderColor, lineWidth);
                 //drawEllipse(coord1.first(), coord1.second(), a, b);
                 graphList.add(e);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
-            try {
-                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
-                TextBox t = new TextBox(coord1.first(), coord1.second(),
-                        coord1.first()+textFiled.length()*textSize/2,
-                        coord1.second()-textSize/2);
-                t.setText(textFiled);
-                t.setTextSize(textSize);
-                t.setTextColor(textColor);
-                t.setSelectedFontStyle(selectedFontStyle);
-                graphList.add(t);
-                //drawText(coord1.first(), coord1.second());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
@@ -783,7 +787,7 @@ public class Controller {
             //
             graphList.add(e);
         } else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.POINT) {
-            Point p = new Point(mouseX, mouseY, lineColor, lineWidth);
+            Point p = new Point(mouseX, mouseY, fillColor, lineWidth);
             p.SetBound(mouseX, mouseY, mouseX, mouseY);
             //
             graphList.add(p);
@@ -832,6 +836,21 @@ public class Controller {
                 }
             } catch (NullPointerException e) {
                e.printStackTrace();
+            }
+        }else if (canvas.getCurrentMode() == MyCanvas.MyCanvasMode.TEXTBOX) {
+            try {
+                Tuple<Double, Double> coord1 = graphList.remove(graphList.size() - 1).getCoord0();
+                TextBox t = new TextBox(coord1.first(), coord1.second(),
+                        coord1.first()+textFiled.length()*textSize/2,
+                        coord1.second()-textSize/2);
+                t.setText(textFiled);
+                t.setTextSize(textSize);
+                t.setTextColor(textColor);
+                t.setSelectedFontStyle(selectedFontStyle);
+                graphList.add(t);
+                //drawText(coord1.first(), coord1.second());
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
         Draw(graphList);

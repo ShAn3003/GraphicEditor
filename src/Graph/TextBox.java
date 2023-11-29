@@ -16,6 +16,19 @@ public class TextBox extends BaseGraph{
         setText("");
         setType(GRAPHTYPE.TEXTBOX);
     }
+
+    public TextBox(double x0, double y0, double x1, double y1,String text,Double textSize,Color textColor,String selectedFontStyle)
+    {
+        setCoord0(x0,y0);
+        coord1=new Tuple<Double,Double>(x1,y1);
+        SetBound(x0,y0,x1,y1);
+        setText(text);
+        setType(GRAPHTYPE.TEXTBOX);
+        this.textSize=textSize;
+        this.textColor=textColor;
+        this.selectedFontStyle=selectedFontStyle;
+    }
+
     public TextBox(TextBox t)
     {
         setCoord0(t.getCoord0().first(),t.getCoord0().second());
@@ -68,6 +81,19 @@ public class TextBox extends BaseGraph{
     public String getText() {
         return text;
     }
+    @Override
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: TextBox\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+        info.append("Coord1: ").append(getCoord1().first()).append(", ").append(getCoord1().second()).append("\n");
+        info.append("Text: ").append(text).append("\n");
+        info.append("TextSize: ").append(textSize).append("\n");
+        info.append("TextColor: ").append(textColor.toString()).append("\n");
+        info.append("SelectedFontStyle: ").append(getSelectedFontStyle()).append("\n");
+        return info.toString();
+    }
+
     @Override
     public void move(Double dx, Double dy) {
         Tuple<Double,Double> coord=this.getCoord0();

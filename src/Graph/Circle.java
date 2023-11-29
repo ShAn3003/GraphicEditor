@@ -64,6 +64,17 @@ public class Circle extends BaseGraph{
     }
 
     @Override
+    public String save() {
+        StringBuilder info = new StringBuilder();
+        info.append("Type: Circle\n");
+        info.append("Coord0: ").append(getCoord0().first()).append(", ").append(getCoord0().second()).append("\n");
+        info.append("Radius: ").append(radius).append("\n");
+        info.append("FillColor: ").append(fillColor.toString()).append("\n");
+        info.append("BorderColor: ").append(borderColor.toString()).append("\n");
+        info.append("LineWidth: ").append(lineWidth).append("\n");
+        return info.toString();
+    }
+    @Override
     public void move(Double dx, Double dy) {
         Tuple<Double,Double> coord=this.getCoord0();
         this.setCoord0(coord.first()+dx,coord.second()+dy);
