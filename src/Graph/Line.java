@@ -1,3 +1,4 @@
+
 package Graph;
 
 import static java.lang.Math.max;
@@ -15,6 +16,20 @@ public class Line extends BaseGraph {
         left=new Tuple<Double,Double>(min(x0,x1),min(y0,y1));
         right=new Tuple<Double,Double>(max(x0,x1),max(y0,y1));
     }
+
+    public double getStartX() {
+        return getCoord0().first();
+    }
+    public double getStartY() {
+        return getCoord0().second();
+    }
+    public double getEndX() {
+        return coord2.first();
+    }
+    public double getEndY() {
+        return coord2.second();
+    }
+
     @Override
     public String save() {
         StringBuilder info = new StringBuilder();

@@ -17,6 +17,10 @@ public class Round extends BaseGraph{
         right=new Tuple<Double,Double>(x+r,y+r);
     }
 
+    public double getRadius() {
+        return radius;
+    }
+
     public String save() {
         StringBuilder info = new StringBuilder();
         info.append("Type: Round\n");

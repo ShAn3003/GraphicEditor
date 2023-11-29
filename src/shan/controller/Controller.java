@@ -1,6 +1,7 @@
 package shan.controller;
 
 import Graph.*;
+import IOHandle.Load;
 import IOHandle.Save;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -286,6 +287,35 @@ public class Controller {
         }
     }
 
+    private void clearCanvas() {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    private void displayGraphsOnCanvas(List<BaseGraph> graphs) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        for (BaseGraph graph : graphs) {
+            if (graph instanceof Round) {
+                Round circle = (Round) graph;
+                drawCircle(circle.getCoord0().first(), circle.getCoord0().second(), circle.getRadius());
+            } else if (graph instanceof Rectangle) {
+                Rectangle rect = (Rectangle) graph;
+                drawRectangle(rect.getLeft().first(), rect.getLeft().second(), rect.getWidth(), rect.getHeight());
+            } else if (graph instanceof Line) {
+                Line line = (Line) graph;
+                drawLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
+            } else if (graph instanceof Ellipse) {
+                Ellipse ellipse = (Ellipse) graph;
+                drawEllipse(ellipse.getCoord0().first(), ellipse.getCoord0().second(), ellipse.getCoord3().first(), ellipse.getCoord3().second());
+            } else if (graph instanceof Point) {
+                Point point = (Point) graph;
+                //drawPencil();
+            }
+            // Add other types of graphs if needed
+        }
+    }
+
     private void drawCircle(double centerX, double centerY, double r) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         double radius = r;
@@ -548,6 +578,26 @@ public class Controller {
 
     @FXML
     private void handleOpen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Graph Parameters");
+
+        // 设置文件选择器的默认扩展名和过滤器
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // 显示打开对话框并获取用户选择的文件
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        // 如果用户选择了文件，则加载参数并显示在画布上
+        if (file != null) {
+            List<BaseGraph> loadedGraphs = Load.loadFromFile(file.getAbsolutePath());
+
+            // 清空画布
+            clearCanvas();
+
+            // 在画布上显示加载的图形
+            displayGraphsOnCanvas(loadedGraphs);
+        }
     }
 
     @FXML
