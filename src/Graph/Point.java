@@ -24,6 +24,7 @@ public class Point extends BaseGraph{
     public Point(Point pl)
     {
         setCoord0(pl.getCoord0().first(),pl.getCoord0().second());
+        super.SetBound(pl.getCoord0().first(),pl.getCoord0().second(),pl.getCoord0().first(),pl.getCoord0().second());
         points=new ArrayList<>();
         for(Tuple<Double, Double> p :pl.getPoints())
         {

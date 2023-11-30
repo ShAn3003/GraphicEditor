@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import shan.interfaces.MyCanvas?>
 <?import shan.interfaces.MyVBox?>
-<?import shan.interfaces.MyTextArea?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.control.Label?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
